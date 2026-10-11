@@ -10,6 +10,8 @@ export function DayCard({
   onMoveStop,
   onEditStop,
   onAddStop,
+  selectedStopId,
+  onSelectStop,
 }) {
   const [showAddForm, setShowAddForm] = useState(false);
   const [newTitle, setNewTitle] = useState('');
@@ -200,6 +202,8 @@ export function DayCard({
               isLast={idx === day.stops.length - 1}
               onRemove={() => onRemoveStop(day.day, stop.id)}
               onEdit={(updated) => onEditStop(day.day, updated)}
+              isSelected={selectedStopId === stop.id}
+              onSelect={onSelectStop}
             />
           ))}
         </div>

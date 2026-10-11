@@ -21,6 +21,8 @@ export function StopCard({
   isLast,
   onRemove,
   onEdit,
+  isSelected,
+  onSelect,
 }) {
   const [isEditing, setIsEditing] = useState(false);
 
@@ -39,7 +41,15 @@ export function StopCard({
   };
 
   return (
-    <div className="relative z-10 group rounded-2xl border border-[#29354B] bg-[#080D1B] p-4.5 sm:p-5 shadow-sm hover:border-[#22D3EE]/40 transition-all duration-200">
+    <div
+      id={`stop-${stop.id}`}
+      onClick={() => onSelect && onSelect(stop.id)}
+      className={`relative z-10 group rounded-2xl border transition-all duration-200 bg-[#080D1B] p-4.5 sm:p-5 shadow-sm ${
+        isSelected
+          ? 'border-[#22D3EE] ring-2 ring-[#22D3EE]/40 shadow-lg shadow-cyan-500/10'
+          : 'border-[#29354B] hover:border-[#22D3EE]/40'
+      }`}
+    >
       <div className="flex items-start justify-between gap-3 sm:gap-4">
         {/* Category Icon & Main Info */}
         <div className="flex items-start gap-3 sm:gap-3.5 min-w-0 flex-1">

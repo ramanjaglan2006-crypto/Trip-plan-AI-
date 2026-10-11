@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { DayCard } from './DayCard';
-import { Layers, Calendar } from 'lucide-react';
+import { Layers } from 'lucide-react';
 
 export function ItineraryTimeline({
   itinerary,
@@ -10,10 +10,17 @@ export function ItineraryTimeline({
   onMoveStop,
   onEditStop,
   onAddStop,
+  selectedDayNumber: propSelectedDay,
+  onSelectDay: propOnSelectDay,
+  selectedStopId,
+  onSelectStop,
 }) {
-  const [selectedDayNumber, setSelectedDayNumber] = useState('all');
+  const [internalSelectedDay, setInternalSelectedDay] = useState('all');
 
-  const days = itinerary.days || [];
+  const selectedDayNumber = propSelectedDay !== undefined ? propSelectedDay : internalSelectedDay;
+  const handleSelectDay = propOnSelectDay || setInternalSelectedDay;
+
+  const days = itinerary?.days || [];
   const totalStops = days.reduce((sum, d) => sum + (d.stops?.length || 0), 0);
 
   return (
@@ -37,7 +44,7 @@ export function ItineraryTimeline({
         {/* Day Filter Chips with Activity Counts */}
         <div className="flex items-center gap-2 overflow-x-auto pb-1 max-w-full no-scrollbar">
           <button
-            onClick={() => setSelectedDayNumber('all')}
+            onClick={() => handleSelectDay('all')}
             className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 whitespace-nowrap border ${
               selectedDayNumber === 'all'
                 ? 'bg-[#22D3EE] text-[#080D1B] border-[#22D3EE] shadow-md shadow-cyan-500/20'
@@ -58,7 +65,7 @@ export function ItineraryTimeline({
             return (
               <button
                 key={d.day}
-                onClick={() => setSelectedDayNumber(d.day)}
+                onClick={() => handleSelectDay(d.day)}
                 className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 whitespace-nowrap border ${
                   isSelected
                     ? 'bg-[#22D3EE] text-[#080D1B] border-[#22D3EE] shadow-md shadow-cyan-500/20'
@@ -91,6 +98,8 @@ export function ItineraryTimeline({
               onMoveStop={onMoveStop}
               onEditStop={onEditStop}
               onAddStop={onAddStop}
+              selectedStopId={selectedStopId}
+              onSelectStop={onSelectStop}
             />
           ))}
       </div>

@@ -1,12 +1,9 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useTripContext } from '../../context/TripContext';
-import { Compass, Moon, Sun, User, Menu } from 'lucide-react';
+import { Compass, User, Menu } from 'lucide-react';
 
-export function Header({
-  darkMode,
-  setDarkMode,
-}) {
+export function Header() {
   const { currentUser } = useTripContext();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const location = useLocation();
@@ -62,14 +59,6 @@ export function Header({
 
         {/* Right Actions */}
         <div className="flex items-center gap-3">
-          {/* Theme Toggle Button */}
-          <button
-            onClick={() => setDarkMode(!darkMode)}
-            className="p-2 rounded-xl text-slate-400 hover:text-white hover:bg-slate-900 transition-colors"
-            title="Toggle Theme"
-          >
-            {darkMode ? <Sun className="w-5 h-5 text-amber-400" /> : <Moon className="w-5 h-5 text-indigo-400" />}
-          </button>
 
           {/* Login or User Profile Link */}
           {currentUser ? (

@@ -31,10 +31,7 @@ function AppContent() {
 
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col font-sans transition-colors duration-200">
-      <Header
-        darkMode={darkMode}
-        setDarkMode={handleToggleDarkMode}
-      />
+      <Header />
 
       <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
         <Routes>

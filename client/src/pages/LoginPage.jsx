@@ -10,7 +10,6 @@ import {
   Eye, 
   EyeOff, 
   CheckCircle2, 
-  Sparkles, 
   LogOut,
   MapPin,
   Calendar
@@ -29,52 +28,121 @@ export function LoginPage() {
   const [errorMsg, setErrorMsg] = useState('');
   const [successMsg, setSuccessMsg] = useState('');
 
+  const getRegisteredUsers = () => {
+    try {
+      const data = localStorage.getItem('tripwise_registered_users');
+      return data ? JSON.parse(data) : {};
+    } catch {
+      return {};
+    }
+  };
+
+  const saveRegisteredUsers = (users) => {
+    localStorage.setItem('tripwise_registered_users', JSON.stringify(users));
+  };
+
   const handleFormSubmit = (e) => {
     e.preventDefault();
     setErrorMsg('');
+    setSuccessMsg('');
+
+    const cleanEmail = email.trim().toLowerCase();
+    const cleanPassword = password.trim();
 
     if (isSignUp && !name.trim()) {
       setErrorMsg('Please enter your full name.');
       return;
     }
 
-    if (!email.trim() || !email.includes('@')) {
+    if (!cleanEmail || !cleanEmail.includes('@') || !cleanEmail.includes('.')) {
       setErrorMsg('Please enter a valid email address.');
       return;
     }
 
-    if (!password || password.length < 4) {
-      setErrorMsg('Password must be at least 4 characters.');
+    if (!cleanPassword || cleanPassword.length < 4) {
+      setErrorMsg('Password must be at least 4 characters long.');
       return;
     }
 
-    const displayName = isSignUp ? name.trim() : (name.trim() || email.split('@')[0]);
-    const userObj = {
-      name: displayName.charAt(0).toUpperCase() + displayName.slice(1),
-      email: email.trim().toLowerCase(),
-      avatar: `https://api.dicebear.com/7.x/bottts/svg?seed=${encodeURIComponent(displayName)}`,
-      joinedAt: new Date().toLocaleDateString('en-US', { month: 'short', year: 'numeric' }),
-    };
+    const usersDb = getRegisteredUsers();
 
-    login(userObj);
-    setSuccessMsg(`Welcome back, ${userObj.name}! Redirecting...`);
-    setTimeout(() => {
-      navigate('/plan');
-    }, 900);
-  };
+    if (isSignUp) {
+      // Sign Up Flow
+      const cleanName = name.trim();
+      const displayName = cleanName.charAt(0).toUpperCase() + cleanName.slice(1);
 
-  const handleQuickDemoLogin = () => {
-    const demoUser = {
-      name: 'Raman Jaglan',
-      email: 'raman@tripwise.ai',
-      avatar: 'https://api.dicebear.com/7.x/bottts/svg?seed=Raman',
-      joinedAt: 'Oct 2026',
-    };
-    login(demoUser);
-    setSuccessMsg('Logged in as Demo Traveler! Redirecting...');
-    setTimeout(() => {
-      navigate('/plan');
-    }, 700);
+      const newUser = {
+        name: displayName,
+        email: cleanEmail,
+        password: cleanPassword,
+        avatar: `https://api.dicebear.com/7.x/bottts/svg?seed=${encodeURIComponent(cleanName)}`,
+        joinedAt: new Date().toLocaleDateString('en-US', { month: 'short', year: 'numeric' }),
+      };
+
+      usersDb[cleanEmail] = newUser;
+      saveRegisteredUsers(usersDb);
+
+      login({
+        name: newUser.name,
+        email: newUser.email,
+        avatar: newUser.avatar,
+        joinedAt: newUser.joinedAt,
+      });
+
+      setSuccessMsg(`Account created! Welcome, ${newUser.name}. Redirecting...`);
+      setTimeout(() => {
+        navigate('/plan');
+      }, 900);
+    } else {
+      // Sign In Flow
+      const existingUser = usersDb[cleanEmail];
+
+      if (existingUser) {
+        if (existingUser.password !== cleanPassword) {
+          setErrorMsg('Incorrect password. Please try again.');
+          return;
+        }
+
+        login({
+          name: existingUser.name,
+          email: existingUser.email,
+          avatar: existingUser.avatar,
+          joinedAt: existingUser.joinedAt,
+        });
+
+        setSuccessMsg(`Welcome back, ${existingUser.name}! Redirecting...`);
+        setTimeout(() => {
+          navigate('/plan');
+        }, 900);
+      } else {
+        // If not in database, seamlessly create profile so anyone can log in with their credentials!
+        const autoName = cleanEmail.split('@')[0];
+        const displayName = autoName.charAt(0).toUpperCase() + autoName.slice(1);
+
+        const newUser = {
+          name: displayName,
+          email: cleanEmail,
+          password: cleanPassword,
+          avatar: `https://api.dicebear.com/7.x/bottts/svg?seed=${encodeURIComponent(displayName)}`,
+          joinedAt: new Date().toLocaleDateString('en-US', { month: 'short', year: 'numeric' }),
+        };
+
+        usersDb[cleanEmail] = newUser;
+        saveRegisteredUsers(usersDb);
+
+        login({
+          name: newUser.name,
+          email: newUser.email,
+          avatar: newUser.avatar,
+          joinedAt: newUser.joinedAt,
+        });
+
+        setSuccessMsg(`Signed in as ${newUser.name}! Redirecting...`);
+        setTimeout(() => {
+          navigate('/plan');
+        }, 900);
+      }
+    }
   };
 
   // If already logged in, show user profile card
@@ -150,7 +218,7 @@ export function LoginPage() {
           </h1>
           <p className="text-xs text-slate-400">
             {isSignUp
-              ? 'Start generating custom travel itineraries with AI'
+              ? 'Enter your details to create an account and plan trips'
               : 'Sign in to access your saved trips and customized itineraries'}
           </p>
         </div>
@@ -162,6 +230,7 @@ export function LoginPage() {
             onClick={() => {
               setIsSignUp(false);
               setErrorMsg('');
+              setSuccessMsg('');
             }}
             className={`py-2 text-xs font-bold rounded-xl transition-all ${
               !isSignUp
@@ -176,6 +245,7 @@ export function LoginPage() {
             onClick={() => {
               setIsSignUp(true);
               setErrorMsg('');
+              setSuccessMsg('');
             }}
             className={`py-2 text-xs font-bold rounded-xl transition-all ${
               isSignUp
@@ -185,24 +255,6 @@ export function LoginPage() {
           >
             Create Account
           </button>
-        </div>
-
-        {/* Quick Demo Login Option */}
-        <button
-          type="button"
-          onClick={handleQuickDemoLogin}
-          className="w-full py-2.5 px-4 rounded-2xl bg-cyan-950/60 hover:bg-cyan-900/80 border border-cyan-800/80 text-cyan-300 font-bold text-xs flex items-center justify-center gap-2 shadow-sm transition-all"
-        >
-          <Sparkles className="w-4 h-4 text-cyan-400" />
-          <span>Quick 1-Click Demo Login</span>
-        </button>
-
-        <div className="relative flex items-center justify-center">
-          <div className="border-t border-slate-800 w-full" />
-          <span className="bg-slate-900 px-3 text-[11px] font-semibold text-slate-500 uppercase tracking-wider">
-            or continue with
-          </span>
-          <div className="border-t border-slate-800 w-full" />
         </div>
 
         {/* Form Inputs */}
@@ -227,9 +279,10 @@ export function LoginPage() {
                 <User className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500" />
                 <input
                   type="text"
+                  required
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  placeholder="e.g. Raman Jaglan"
+                  placeholder="e.g. Alex Morgan"
                   className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white text-xs placeholder:text-slate-600 focus:outline-none focus:border-cyan-500 transition-colors"
                 />
               </div>
@@ -242,6 +295,7 @@ export function LoginPage() {
               <Mail className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500" />
               <input
                 type="email"
+                required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="you@example.com"
@@ -256,7 +310,7 @@ export function LoginPage() {
               {!isSignUp && (
                 <button
                   type="button"
-                  onClick={() => alert('Password reset link sent to demo email.')}
+                  onClick={() => alert('Password reset link sent to your email.')}
                   className="text-[11px] font-semibold text-cyan-400 hover:underline"
                 >
                   Forgot password?
@@ -267,6 +321,7 @@ export function LoginPage() {
               <Lock className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500" />
               <input
                 type={showPassword ? 'text' : 'password'}
+                required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"

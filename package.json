@@ -6,8 +6,8 @@
   "scripts": {
     "dev": "concurrently \"npm run dev --prefix server\" \"npm run dev --prefix client\"",
     "start": "node server/src/server.js",
-    "build": "cd client && npm install && npm run build",
-    "vercel-build": "cd client && npm install && npm run build",
+    "build": "npm run build --prefix client",
+    "vercel-build": "npm run build --prefix client",
     "install:all": "npm install && cd server && npm install && cd ../client && npm install"
   },
   "dependencies": {

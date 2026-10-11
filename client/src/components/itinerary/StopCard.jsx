@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import { StopActions } from './StopActions';
 import { StopDetails } from './StopDetails';
-import { Clock, MapPin, Compass, Utensils, Camera, Landmark, Coffee } from 'lucide-react';
+import { Clock, MapPin, Compass, Utensils, Camera, Landmark, Coffee, DollarSign } from 'lucide-react';
 
 const CATEGORY_MAP = {
-  Food: { icon: Utensils, bg: 'bg-orange-100 dark:bg-orange-950/40 text-orange-600 dark:text-orange-400' },
-  Sightseeing: { icon: Camera, bg: 'bg-blue-100 dark:bg-blue-950/40 text-blue-600 dark:text-blue-400' },
-  Culture: { icon: Landmark, bg: 'bg-purple-100 dark:bg-purple-950/40 text-purple-600 dark:text-purple-400' },
-  Adventure: { icon: Compass, bg: 'bg-emerald-100 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400' },
-  Relaxation: { icon: Coffee, bg: 'bg-teal-100 dark:bg-teal-950/40 text-teal-600 dark:text-teal-400' },
+  Food: { icon: Utensils, bg: 'bg-amber-500/10 text-amber-400 border border-amber-500/20' },
+  Sightseeing: { icon: Camera, bg: 'bg-cyan-500/10 text-[#22D3EE] border border-cyan-500/20' },
+  Culture: { icon: Landmark, bg: 'bg-purple-500/10 text-purple-400 border border-purple-500/20' },
+  Adventure: { icon: Compass, bg: 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' },
+  Relaxation: { icon: Coffee, bg: 'bg-teal-500/10 text-teal-400 border border-teal-500/20' },
 };
 
 export function StopCard({
@@ -32,29 +32,47 @@ export function StopCard({
     setIsEditing(false);
   };
 
+  const handleConfirmRemove = () => {
+    if (window.confirm(`Are you sure you want to remove "${stop.title}"?`)) {
+      onRemove();
+    }
+  };
+
   return (
-    <div className="group rounded-2xl border border-slate-200/90 dark:border-slate-800/90 bg-white dark:bg-slate-900 p-4 shadow-sm hover:shadow-md transition-all duration-200">
-      <div className="flex items-start justify-between gap-3">
+    <div className="relative z-10 group rounded-2xl border border-[#29354B] bg-[#080D1B] p-4.5 sm:p-5 shadow-sm hover:border-[#22D3EE]/40 transition-all duration-200">
+      <div className="flex items-start justify-between gap-3 sm:gap-4">
         {/* Category Icon & Main Info */}
-        <div className="flex items-start gap-3 min-w-0 flex-1">
-          <div className={`p-2.5 rounded-xl ${categoryConfig.bg} flex-shrink-0 mt-0.5`}>
+        <div className="flex items-start gap-3 sm:gap-3.5 min-w-0 flex-1">
+          <div className={`p-2.5 rounded-xl ${categoryConfig.bg} flex-shrink-0 mt-0.5 shadow-sm`}>
             <CategoryIcon className="w-4 h-4" />
           </div>
 
-          <div className="min-w-0 flex-1">
-            <div className="flex flex-wrap items-center gap-2 mb-1">
-              <span className="inline-flex items-center gap-1 text-[11px] font-bold text-slate-700 dark:text-slate-300 bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded-md">
-                <Clock className="w-3 h-3 text-blue-500" />
+          <div className="min-w-0 flex-1 space-y-1">
+            {/* Meta Row: Time, Category, Duration */}
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="inline-flex items-center gap-1 text-[11px] font-bold text-slate-200 bg-[#19243A] px-2 py-0.5 rounded-md border border-[#29354B]">
+                <Clock className="w-3 h-3 text-[#22D3EE]" />
                 {stop.time}
               </span>
               <span className={`text-[10px] font-extrabold uppercase tracking-wide px-2 py-0.5 rounded-md ${categoryConfig.bg}`}>
                 {stop.category || 'Sightseeing'}
               </span>
+              {stop.durationMinutes && (
+                <span className="text-[11px] text-[#94A3B8] font-medium hidden sm:inline">
+                  • {stop.durationMinutes} mins
+                </span>
+              )}
+              {stop.estimatedCost && stop.estimatedCost !== '$0' && (
+                <span className="text-[11px] text-emerald-400 font-semibold hidden md:inline">
+                  • {stop.estimatedCost}
+                </span>
+              )}
             </div>
 
+            {/* Title with hover */}
             <h4
               onClick={onToggleExpand}
-              className="font-bold text-sm sm:text-base text-slate-900 dark:text-white cursor-pointer hover:text-blue-600 dark:hover:text-blue-400 transition-colors truncate"
+              className="font-bold text-sm sm:text-base text-[#F8FAFC] cursor-pointer hover:text-[#22D3EE] transition-colors leading-snug"
             >
               {stop.title}
             </h4>
@@ -74,7 +92,7 @@ export function StopCard({
               setIsEditing(true);
               if (!isExpanded) onToggleExpand();
             }}
-            onRemove={onRemove}
+            onRemove={handleConfirmRemove}
           />
         )}
       </div>

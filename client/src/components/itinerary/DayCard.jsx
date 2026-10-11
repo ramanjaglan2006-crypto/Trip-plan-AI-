@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { StopCard } from './StopCard';
-import { Plus, MapPin, Calendar, X } from 'lucide-react';
+import { Plus, MapPin, Calendar, X, Sparkles } from 'lucide-react';
 
 export function DayCard({
   day,
@@ -41,27 +41,27 @@ export function DayCard({
   };
 
   return (
-    <div className="glass-panel rounded-3xl p-6 sm:p-8 border border-slate-200/80 dark:border-slate-800/80 shadow-lg mb-6">
+    <div className="bg-[#111A2E] rounded-3xl p-6 sm:p-8 border border-[#29354B] shadow-xl mb-6">
       {/* Day Header */}
-      <div className="flex flex-wrap items-center justify-between gap-4 mb-6 border-b border-slate-200/80 dark:border-slate-800/80 pb-4">
+      <div className="flex flex-wrap items-center justify-between gap-4 mb-6 border-b border-[#29354B] pb-4">
         <div className="flex items-center gap-3">
-          <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-blue-600 to-indigo-600 flex flex-col items-center justify-center text-white font-extrabold shadow-md shadow-blue-500/20">
-            <span className="text-[10px] uppercase tracking-wider opacity-80">Day</span>
+          <div className="w-12 h-12 rounded-2xl bg-[#19243A] border border-[#29354B] flex flex-col items-center justify-center text-[#22D3EE] font-extrabold shadow-md">
+            <span className="text-[10px] uppercase tracking-wider text-[#94A3B8]">Day</span>
             <span className="text-lg leading-none">{day.day}</span>
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <h3 className="font-extrabold text-xl text-slate-900 dark:text-white">
+              <h3 className="font-extrabold text-xl text-[#F8FAFC]">
                 {day.title}
               </h3>
               {day.location && (
-                <span className="inline-flex items-center gap-1 text-xs font-semibold text-rose-600 dark:text-rose-400 bg-rose-50 dark:bg-rose-950/40 px-2 py-0.5 rounded-md border border-rose-200 dark:border-rose-800">
+                <span className="inline-flex items-center gap-1 text-xs font-semibold text-rose-400 bg-rose-950/40 px-2 py-0.5 rounded-md border border-rose-800">
                   <MapPin className="w-3 h-3" />
                   {day.location}
                 </span>
               )}
             </div>
-            <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+            <p className="text-xs text-[#94A3B8] mt-0.5">
               {day.summary}
             </p>
           </div>
@@ -70,7 +70,7 @@ export function DayCard({
         {/* Add Stop Trigger */}
         <button
           onClick={() => setShowAddForm(!showAddForm)}
-          className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-blue-50 dark:bg-blue-950/50 hover:bg-blue-100 text-blue-600 dark:text-blue-400 font-semibold text-xs border border-blue-200 dark:border-blue-800 transition-all shadow-sm"
+          className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-[#19243A] hover:bg-[#202e4a] text-[#22D3EE] font-semibold text-xs border border-[#29354B] transition-all shadow-sm"
         >
           <Plus className="w-4 h-4" />
           <span>Add Stop</span>
@@ -81,62 +81,63 @@ export function DayCard({
       {showAddForm && (
         <form
           onSubmit={handleAddSubmit}
-          className="mb-6 p-4 rounded-2xl bg-blue-50/50 dark:bg-blue-950/20 border border-blue-200 dark:border-blue-800 space-y-3 animate-fadeIn"
+          className="mb-6 p-5 rounded-2xl bg-[#080D1B] border border-[#29354B] space-y-3 animate-fadeIn"
         >
           <div className="flex items-center justify-between mb-1">
-            <h4 className="font-bold text-xs text-blue-900 dark:text-blue-200 uppercase tracking-wider">
-              Add Custom Stop to Day {day.day}
+            <h4 className="font-bold text-xs text-[#22D3EE] uppercase tracking-wider flex items-center gap-1.5">
+              <Plus className="w-3.5 h-3.5" />
+              Add Activity to Day {day.day}
             </h4>
             <button
               type="button"
               onClick={() => setShowAddForm(false)}
-              className="text-slate-400 hover:text-slate-600 p-1"
+              className="text-[#94A3B8] hover:text-white p-1 rounded-lg"
             >
               <X className="w-4 h-4" />
             </button>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
             <input
               type="text"
               required
               value={newTitle}
               onChange={(e) => setNewTitle(e.target.value)}
-              placeholder="Stop Title (e.g. Afternoon Tea at Local Cafe)"
-              className="sm:col-span-2 px-3 py-1.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white text-xs"
+              placeholder="Stop Title (e.g. Afternoon Tea at Cafe)"
+              className="sm:col-span-2 px-3.5 py-2 rounded-xl border border-[#29354B] bg-[#111A2E] text-white text-xs focus:outline-none focus:ring-2 focus:ring-[#22D3EE]"
             />
             <input
               type="text"
               value={newTime}
               onChange={(e) => setNewTime(e.target.value)}
               placeholder="Time (e.g. 03:00 PM)"
-              className="px-3 py-1.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white text-xs"
+              className="px-3.5 py-2 rounded-xl border border-[#29354B] bg-[#111A2E] text-white text-xs focus:outline-none focus:ring-2 focus:ring-[#22D3EE]"
             />
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
             <input
               type="number"
               value={newDuration}
               onChange={(e) => setNewDuration(e.target.value)}
               placeholder="Duration (mins)"
-              className="px-3 py-1.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white text-xs"
+              className="px-3.5 py-2 rounded-xl border border-[#29354B] bg-[#111A2E] text-white text-xs focus:outline-none focus:ring-2 focus:ring-[#22D3EE]"
             />
             <input
               type="text"
               value={newCost}
               onChange={(e) => setNewCost(e.target.value)}
               placeholder="Cost (e.g. $15)"
-              className="px-3 py-1.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white text-xs"
+              className="px-3.5 py-2 rounded-xl border border-[#29354B] bg-[#111A2E] text-white text-xs focus:outline-none focus:ring-2 focus:ring-[#22D3EE]"
             />
             <select
               value={newCategory}
               onChange={(e) => setNewCategory(e.target.value)}
-              className="px-3 py-1.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white text-xs font-medium"
+              className="px-3.5 py-2 rounded-xl border border-[#29354B] bg-[#111A2E] text-white text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-[#22D3EE]"
             >
               <option value="Sightseeing">Sightseeing</option>
-              <option value="Food">Food</option>
-              <option value="Culture">Culture</option>
+              <option value="Food">Food & Dining</option>
+              <option value="Culture">Culture & History</option>
               <option value="Adventure">Adventure</option>
               <option value="Relaxation">Relaxation</option>
             </select>
@@ -146,16 +147,23 @@ export function DayCard({
             type="text"
             value={newDesc}
             onChange={(e) => setNewDesc(e.target.value)}
-            placeholder="Brief description..."
-            className="w-full px-3 py-1.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white text-xs"
+            placeholder="Brief description or tips..."
+            className="w-full px-3.5 py-2 rounded-xl border border-[#29354B] bg-[#111A2E] text-white text-xs focus:outline-none focus:ring-2 focus:ring-[#22D3EE]"
           />
 
           <div className="flex justify-end gap-2 pt-1">
             <button
-              type="submit"
-              className="px-4 py-1.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl text-xs shadow-sm transition-all"
+              type="button"
+              onClick={() => setShowAddForm(false)}
+              className="px-3.5 py-1.5 rounded-xl text-xs font-semibold text-[#94A3B8] hover:text-white"
             >
-              Save Custom Stop
+              Cancel
+            </button>
+            <button
+              type="submit"
+              className="px-4 py-1.5 bg-[#22D3EE] hover:bg-cyan-300 text-[#080D1B] font-extrabold rounded-xl text-xs shadow-md transition-all"
+            >
+              Save Activity
             </button>
           </div>
         </form>
@@ -163,20 +171,23 @@ export function DayCard({
 
       {/* Stop List or Empty Day Notice */}
       {day.stops.length === 0 ? (
-        <div className="text-center py-8 px-4 rounded-2xl border border-dashed border-slate-300 dark:border-slate-700">
-          <Calendar className="w-8 h-8 text-slate-400 mx-auto mb-2" />
-          <p className="text-sm font-semibold text-slate-600 dark:text-slate-400">
-            No stops planned for this day.
+        <div className="text-center py-8 px-4 rounded-2xl border border-dashed border-[#29354B] bg-[#080D1B]/40">
+          <Calendar className="w-8 h-8 text-[#94A3B8] mx-auto mb-2" />
+          <p className="text-sm font-semibold text-slate-300">
+            No activities planned for this day yet.
           </p>
           <button
             onClick={() => setShowAddForm(true)}
-            className="mt-2 text-xs font-bold text-blue-600 dark:text-blue-400 hover:underline"
+            className="mt-2 text-xs font-bold text-[#22D3EE] hover:underline"
           >
-            + Add a stop manually
+            + Add an activity manually
           </button>
         </div>
       ) : (
-        <div className="space-y-3">
+        <div className="relative space-y-3">
+          {/* Subtle Vertical Timeline Connector Line */}
+          <div className="absolute left-[28px] top-6 bottom-6 w-[2px] bg-[#29354B] pointer-events-none hidden sm:block" />
+
           {day.stops.map((stop, idx) => (
             <StopCard
               key={stop.id}

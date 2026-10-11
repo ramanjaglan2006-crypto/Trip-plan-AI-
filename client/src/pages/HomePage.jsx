@@ -1,200 +1,273 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Sparkles, ArrowRight, ShieldCheck, Compass, Sliders, Zap, CheckCircle2, Clock } from 'lucide-react';
+import { Sparkles, ArrowRight, ShieldCheck, Compass, Sliders, Clock, MapPin, Calendar, CheckCircle2, FileText, Layers, Download } from 'lucide-react';
 
 export function HomePage() {
   return (
     <div className="space-y-20 pb-16 animate-fadeIn text-white">
-      {/* HERO SECTION (Styled like Reference Screenshot 1) */}
-      <section className="relative min-h-[580px] rounded-3xl overflow-hidden flex items-center justify-between p-8 sm:p-14 border border-slate-800 shadow-2xl bg-slate-900">
-        {/* Background Image & Ambient Overlay */}
-        <div
-          className="absolute inset-0 bg-cover bg-center opacity-45 mix-blend-luminosity scale-105 transition-transform duration-1000"
-          style={{
-            backgroundImage: `url('https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=1600&auto=format&fit=crop')`,
-          }}
-        />
-        <div className="absolute inset-0 bg-gradient-to-r from-slate-950 via-slate-950/80 to-transparent" />
+      {/* SECTION 1: TWO-COLUMN HERO EXPERIENCE */}
+      <section className="relative rounded-3xl overflow-hidden p-8 sm:p-12 lg:p-16 border border-[#29354B] bg-[#111A2E] shadow-2xl">
+        {/* Subtle Ambient Background Gradient */}
+        <div className="absolute top-0 right-0 -mr-20 -mt-20 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute bottom-0 left-0 -ml-20 -mb-20 w-80 h-80 bg-blue-600/10 rounded-full blur-3xl pointer-events-none" />
 
-        {/* Content Container */}
-        <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center w-full">
-          {/* Headline Left */}
-          <div className="lg:col-span-7 space-y-4">
-            <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 text-xs font-bold uppercase tracking-wider">
-              <Sparkles className="w-3.5 h-3.5" /> Next Generation AI Travel Engine
-            </span>
-            <h1 className="text-4xl sm:text-6xl font-black uppercase tracking-tight leading-none text-white drop-shadow-md font-sans">
-              PLAN YOUR <br />
-              <span className="bg-gradient-to-r from-cyan-400 via-emerald-400 to-blue-500 bg-clip-text text-transparent">
-                NEXT TRIP
-              </span> <br />
-              WITH AI
+        <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+          {/* Left Column: Copy & Actions */}
+          <div className="lg:col-span-7 space-y-6">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-cyan-500/10 text-[#22D3EE] border border-cyan-500/20 text-xs font-bold uppercase tracking-wider">
+              <Sparkles className="w-3.5 h-3.5" />
+              <span>AI-POWERED TRAVEL PLANNER</span>
+            </div>
+
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-[1.1] text-[#F8FAFC] font-sans">
+              Your Next Adventure, <br />
+              <span className="bg-gradient-to-r from-[#22D3EE] via-teal-300 to-blue-400 bg-clip-text text-transparent">
+                Planned Intelligently.
+              </span>
             </h1>
-          </div>
 
-          {/* Translucent Glass Card Right */}
-          <div className="lg:col-span-5 bg-slate-900/80 backdrop-blur-xl p-8 rounded-3xl border border-slate-700/80 shadow-2xl space-y-6">
-            <p className="text-sm sm:text-base text-slate-200 leading-relaxed font-medium">
-              TripWise AI builds your itinerary in seconds. Edit stops, reorder schedules, and customize every day. Travel smarter, not harder.
+            <p className="text-base sm:text-lg text-[#94A3B8] leading-relaxed max-w-xl font-normal">
+              Build personalized travel itineraries in seconds. Discover destinations, organize activities, and customize every detail of your journey.
             </p>
 
-            <div className="flex flex-wrap items-center gap-3 pt-2">
+            <div className="flex flex-wrap items-center gap-4 pt-2">
               <Link
                 to="/plan"
-                className="px-6 py-3 rounded-2xl bg-white text-slate-950 font-extrabold text-sm shadow-lg hover:bg-slate-100 transition-all flex items-center gap-2"
+                className="px-7 py-3.5 rounded-2xl bg-[#22D3EE] hover:bg-cyan-300 text-[#080D1B] font-extrabold text-sm shadow-lg shadow-cyan-500/20 transition-all flex items-center gap-2 group active:scale-95"
               >
-                <span>Start planning</span>
-                <ArrowRight className="w-4 h-4" />
+                <span>Plan My Trip</span>
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
               </Link>
               <Link
-                to="/about"
-                className="px-6 py-3 rounded-2xl bg-slate-800/80 hover:bg-slate-800 text-white font-bold text-sm border border-slate-700 transition-all"
+                to="/plan"
+                className="px-6 py-3.5 rounded-2xl bg-[#19243A] hover:bg-[#202e4a] text-[#F8FAFC] font-semibold text-sm border border-[#29354B] transition-all"
               >
-                Learn more
+                Explore Destinations
               </Link>
+            </div>
+
+            {/* Compact Supporting Value Statement */}
+            <div className="pt-4 border-t border-[#29354B]/80 flex flex-wrap items-center gap-6 text-xs text-[#94A3B8] font-medium">
+              <span className="flex items-center gap-1.5">
+                <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+                Personalized itineraries
+              </span>
+              <span className="flex items-center gap-1.5">
+                <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+                Flexible plans
+              </span>
+              <span className="flex items-center gap-1.5">
+                <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+                Simple exports
+              </span>
+            </div>
+          </div>
+
+          {/* Right Column: Polished Itinerary Visual Preview Card */}
+          <div className="lg:col-span-5">
+            <div className="rounded-2xl bg-[#080D1B] border border-[#29354B] p-5 shadow-2xl relative overflow-hidden space-y-4">
+              {/* Destination Image Banner */}
+              <div className="relative h-44 rounded-xl overflow-hidden border border-[#29354B]">
+                <img
+                  src="https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?q=80&w=800&auto=format&fit=crop"
+                  alt="Kyoto, Japan preview"
+                  className="w-full h-full object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#080D1B] via-transparent to-black/20" />
+                <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between text-xs">
+                  <span className="px-2.5 py-1 rounded-md bg-[#080D1B]/80 backdrop-blur-md text-[#22D3EE] font-bold border border-cyan-800/40">
+                    5-Day Sample
+                  </span>
+                  <span className="flex items-center gap-1 px-2.5 py-1 rounded-md bg-[#080D1B]/80 backdrop-blur-md text-white font-semibold">
+                    <MapPin className="w-3 h-3 text-rose-400" /> Tokyo & Kyoto
+                  </span>
+                </div>
+              </div>
+
+              {/* Trip Header Preview */}
+              <div>
+                <h3 className="font-extrabold text-base text-[#F8FAFC]">
+                  Tokyo & Kyoto Cultural Highlights
+                </h3>
+                <p className="text-xs text-[#94A3B8] mt-0.5">
+                  Day 1: Modern Wonders & Historic Sanctuaries
+                </p>
+              </div>
+
+              {/* Daily Stops Sample List */}
+              <div className="space-y-2 pt-1">
+                <div className="p-2.5 rounded-xl bg-[#111A2E] border border-[#29354B] flex items-center justify-between gap-3 text-xs">
+                  <div className="flex items-center gap-2.5">
+                    <span className="w-2 h-2 rounded-full bg-cyan-400" />
+                    <span className="font-semibold text-slate-200">Meiji Shrine & Forest Walk</span>
+                  </div>
+                  <span className="text-[10px] text-[#94A3B8] bg-[#19243A] px-2 py-0.5 rounded font-medium">09:00 AM</span>
+                </div>
+
+                <div className="p-2.5 rounded-xl bg-[#111A2E] border border-[#29354B] flex items-center justify-between gap-3 text-xs">
+                  <div className="flex items-center gap-2.5">
+                    <span className="w-2 h-2 rounded-full bg-emerald-400" />
+                    <span className="font-semibold text-slate-200">Tsukiji Gourmet Market</span>
+                  </div>
+                  <span className="text-[10px] text-[#94A3B8] bg-[#19243A] px-2 py-0.5 rounded font-medium">12:30 PM</span>
+                </div>
+
+                <div className="p-2.5 rounded-xl bg-[#111A2E] border border-[#29354B] flex items-center justify-between gap-3 text-xs">
+                  <div className="flex items-center gap-2.5">
+                    <span className="w-2 h-2 rounded-full bg-purple-400" />
+                    <span className="font-semibold text-slate-200">Shibuya Sky Sunset Vista</span>
+                  </div>
+                  <span className="text-[10px] text-[#94A3B8] bg-[#19243A] px-2 py-0.5 rounded font-medium">04:30 PM</span>
+                </div>
+              </div>
+
+              {/* Presentational Footer Tag */}
+              <div className="pt-2 border-t border-[#29354B] flex items-center justify-between text-[11px] text-[#94A3B8]">
+                <span className="flex items-center gap-1 text-emerald-400 font-semibold">
+                  <Sliders className="w-3.5 h-3.5" /> Reorder & Edit Stops Live
+                </span>
+                <span className="text-slate-400">PDF / JSON Export</span>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* SECTION 2: HOW IT WORKS FOR YOU (Styled like Reference Screenshot 2 & 3) */}
-      <section className="space-y-8">
+      {/* SECTION 2: HOW IT WORKS */}
+      <section className="space-y-10">
         <div className="text-center space-y-2">
-          <h2 className="text-3xl sm:text-5xl font-black tracking-tight text-white font-sans">
-            How TripWise AI works for <span className="text-slate-400">you</span>
+          <span className="text-xs font-bold uppercase tracking-wider text-[#22D3EE]">Simple & Intelligent</span>
+          <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-[#F8FAFC] font-sans">
+            How TripWise AI Works For You
           </h2>
-          <p className="text-sm text-slate-400 max-w-xl mx-auto">
-            Three core architectural tools that handle everything from start to finish.
+          <p className="text-sm text-[#94A3B8] max-w-xl mx-auto">
+            From natural language prompt to a tailored, interactive travel plan in three clean steps.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
-          {/* Card 1: Itineraries built by AI */}
-          <div className="md:col-span-4 bg-slate-900/90 rounded-3xl p-8 border border-slate-800 space-y-6 flex flex-col justify-between hover:border-cyan-500/50 transition-all">
-            <div className="w-12 h-12 rounded-2xl bg-cyan-500/20 text-cyan-400 flex items-center justify-center">
-              <Compass className="w-6 h-6" />
-            </div>
-            <div>
-              <h3 className="font-extrabold text-2xl text-white mb-2">
-                Itineraries built by AI
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {/* Step 1 */}
+          <div className="bg-[#111A2E] rounded-2xl p-7 border border-[#29354B] space-y-4 hover:border-cyan-500/40 transition-all flex flex-col justify-between">
+            <div className="space-y-3">
+              <div className="w-12 h-12 rounded-xl bg-cyan-500/10 text-[#22D3EE] flex items-center justify-center font-bold text-lg">
+                <Compass className="w-6 h-6" />
+              </div>
+              <h3 className="font-bold text-xl text-[#F8FAFC]">
+                1. Describe Your Trip
               </h3>
-              <p className="text-xs text-slate-400 leading-relaxed">
-                Let our cutting-edge algorithm do the heavy lifting and map out your realistic journey in structured JSON format.
+              <p className="text-xs text-[#94A3B8] leading-relaxed">
+                Enter your destination, duration, travelers, budget tier, and preferred themes. Our AI engine structures a comprehensive daily itinerary.
               </p>
             </div>
-            <Link to="/plan" className="text-xs font-bold text-cyan-400 flex items-center gap-1 hover:underline pt-4">
-              DISCOVER <ArrowRight className="w-3.5 h-3.5" />
-            </Link>
+            <div className="pt-2 text-xs font-bold text-[#22D3EE] flex items-center gap-1">
+              Natural language support <ArrowRight className="w-3.5 h-3.5" />
+            </div>
           </div>
 
-          {/* Card 2: Command Center - Change anything */}
-          <div className="md:col-span-8 bg-slate-900/90 rounded-3xl p-8 sm:p-10 border border-slate-800 space-y-6 flex flex-col justify-between hover:border-emerald-500/50 transition-all">
-            <span className="text-[10px] font-bold uppercase tracking-widest text-slate-500">
-              COMMAND CENTER
-            </span>
+          {/* Step 2 */}
+          <div className="bg-[#111A2E] rounded-2xl p-7 border border-[#29354B] space-y-4 hover:border-teal-500/40 transition-all flex flex-col justify-between">
             <div className="space-y-3">
-              <h3 className="font-black text-3xl sm:text-5xl tracking-tight text-white leading-none font-sans">
-                Change anything <br />
-                with a few taps
+              <div className="w-12 h-12 rounded-xl bg-teal-500/10 text-teal-400 flex items-center justify-center font-bold text-lg">
+                <Sliders className="w-6 h-6" />
+              </div>
+              <h3 className="font-bold text-xl text-[#F8FAFC]">
+                2. Customize Everything
               </h3>
-              <p className="text-sm text-slate-400 max-w-md">
-                Your bespoke trip stays entirely flexible. Expand, remove, or reorder stops without making extra AI calls.
+              <p className="text-xs text-[#94A3B8] leading-relaxed">
+                Add stops, delete unwanted visits, change scheduled times, and reorder activities up or down without re-triggering AI calls or losing edits.
               </p>
             </div>
-            <div className="pt-4 flex flex-wrap items-center gap-4">
-              <Link
-                to="/plan"
-                className="px-6 py-3 rounded-full bg-white text-slate-950 font-extrabold text-xs shadow-lg hover:bg-slate-100 transition-all"
-              >
-                Customize Now
-              </Link>
-              <Link to="/about" className="text-xs font-bold text-slate-400 hover:text-white flex items-center gap-1">
-                LEARN MORE <ArrowRight className="w-3.5 h-3.5" />
-              </Link>
+            <div className="pt-2 text-xs font-bold text-teal-400 flex items-center gap-1">
+              100% In-browser reactivity <ArrowRight className="w-3.5 h-3.5" />
+            </div>
+          </div>
+
+          {/* Step 3 */}
+          <div className="bg-[#111A2E] rounded-2xl p-7 border border-[#29354B] space-y-4 hover:border-blue-500/40 transition-all flex flex-col justify-between">
+            <div className="space-y-3">
+              <div className="w-12 h-12 rounded-xl bg-blue-500/10 text-blue-400 flex items-center justify-center font-bold text-lg">
+                <Download className="w-6 h-6" />
+              </div>
+              <h3 className="font-bold text-xl text-[#F8FAFC]">
+                3. Save & Export Anywhere
+              </h3>
+              <p className="text-xs text-[#94A3B8] leading-relaxed">
+                Your itineraries persist automatically in your offline library. Export formatted Markdown, standard JSON, or print directly to clean PDF documents.
+              </p>
+            </div>
+            <div className="pt-2 text-xs font-bold text-blue-400 flex items-center gap-1">
+              Offline persistence <ArrowRight className="w-3.5 h-3.5" />
             </div>
           </div>
         </div>
       </section>
 
-      {/* SECTION 3: WHAT MAKES US DIFFERENT (Styled like Reference Screenshot 4) */}
-      <section className="bg-slate-900/90 rounded-3xl p-8 sm:p-12 border border-slate-800 space-y-8">
+      {/* SECTION 3: THE TRIPWISE ADVANTAGE */}
+      <section className="bg-[#111A2E] rounded-3xl p-8 sm:p-12 border border-[#29354B] space-y-8">
         <div>
-          <span className="text-[11px] font-bold uppercase tracking-widest text-emerald-400 block mb-2">
-            THE EDGE
+          <span className="text-xs font-bold uppercase tracking-wider text-emerald-400 block mb-1">
+            Engineered For Travelers
           </span>
-          <h2 className="text-3xl sm:text-5xl font-black tracking-tight text-white font-sans">
-            What makes TripWise <span className="text-emerald-400">different</span>
+          <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-[#F8FAFC] font-sans">
+            Why Choose TripWise AI
           </h2>
-          <p className="text-sm text-slate-400 max-w-2xl mt-2 leading-relaxed">
-            Travel planning used to demand patience and compromise. TripWise AI removes both. The AI handles the initial structuring while React state keeps you in total control.
+          <p className="text-sm text-[#94A3B8] max-w-2xl mt-2 leading-relaxed">
+            Unlike static chatbots that produce uneditable walls of text, TripWise AI creates structured data models that you can interact with and refine.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-4">
-          <div className="space-y-3">
-            <div className="w-10 h-10 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-2">
+          <div className="space-y-3 p-5 rounded-2xl bg-[#080D1B]/50 border border-[#29354B]">
+            <div className="w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center">
               <Clock className="w-5 h-5" />
             </div>
-            <h3 className="font-extrabold text-lg text-white">Hours become minutes</h3>
-            <p className="text-xs text-slate-400 leading-relaxed">
-              Stop spending days researching. Get a complete, highly-tailored structured itinerary instantly.
+            <h3 className="font-bold text-base text-[#F8FAFC]">Hours Turned Into Minutes</h3>
+            <p className="text-xs text-[#94A3B8] leading-relaxed">
+              No more searching 30 tabs for hours. Get a complete, realistic itinerary calibrated for timing, budget, and travel style in seconds.
             </p>
           </div>
 
-          <div className="space-y-3">
-            <div className="w-10 h-10 rounded-xl bg-cyan-500/20 text-cyan-400 flex items-center justify-center">
+          <div className="space-y-3 p-5 rounded-2xl bg-[#080D1B]/50 border border-[#29354B]">
+            <div className="w-10 h-10 rounded-xl bg-cyan-500/10 text-[#22D3EE] flex items-center justify-center">
               <Sliders className="w-5 h-5" />
             </div>
-            <h3 className="font-extrabold text-lg text-white">Trips made personal</h3>
-            <p className="text-xs text-slate-400 leading-relaxed">
-              The AI learns what matters to you and builds your schedule accordingly. You can edit stop details live.
+            <h3 className="font-bold text-base text-[#F8FAFC]">Live In-Memory Adjustments</h3>
+            <p className="text-xs text-[#94A3B8] leading-relaxed">
+              Move stops up or down, edit durations and costs, and append new stops. All operations run instantly in local state without server delays.
             </p>
           </div>
 
-          <div className="space-y-3">
-            <div className="w-10 h-10 rounded-xl bg-purple-500/20 text-purple-400 flex items-center justify-center">
+          <div className="space-y-3 p-5 rounded-2xl bg-[#080D1B]/50 border border-[#29354B]">
+            <div className="w-10 h-10 rounded-xl bg-purple-500/10 text-purple-400 flex items-center justify-center">
               <ShieldCheck className="w-5 h-5" />
             </div>
-            <h3 className="font-extrabold text-lg text-white">Fail-safe architecture</h3>
-            <p className="text-xs text-slate-400 leading-relaxed">
-              Zod schema validation, JSON repair, and stale request cancellation ensure zero application crashes.
+            <h3 className="font-bold text-base text-[#F8FAFC]">Fault-Tolerant Architecture</h3>
+            <p className="text-xs text-[#94A3B8] leading-relaxed">
+              Equipped with Zod schema verification, JSON repair, stale request protection, and offline fallback generators for continuous uptime.
             </p>
           </div>
         </div>
       </section>
 
-      {/* SECTION 4: TRUSTED STATS BANNER (Styled like Reference Screenshot 5) */}
-      <section className="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
-        <div className="md:col-span-6 bg-slate-900/90 rounded-3xl p-8 border border-slate-800 space-y-4">
-          <span className="text-[10px] font-bold uppercase tracking-widest text-cyan-400">
-            RESULTS & TRUST
-          </span>
-          <h3 className="font-black text-3xl sm:text-4xl text-white tracking-tight font-sans">
-            Trusted by travelers everywhere
-          </h3>
-          <p className="text-xs text-slate-400 leading-relaxed">
-            TripWise AI helps users spend less time planning and more time experiencing the world.
+      {/* SECTION 4: CALL TO ACTION */}
+      <section className="rounded-3xl p-8 sm:p-12 border border-[#29354B] bg-gradient-to-r from-[#111A2E] via-[#19243A] to-[#111A2E] text-center space-y-6">
+        <div className="max-w-2xl mx-auto space-y-3">
+          <h2 className="text-2xl sm:text-4xl font-extrabold text-[#F8FAFC] tracking-tight font-sans">
+            Ready to plan your next journey?
+          </h2>
+          <p className="text-sm text-[#94A3B8] leading-relaxed">
+            Create your custom itinerary now. Completely free, customizable, and instantly exportable.
           </p>
-          <div className="pt-2">
-            <Link
-              to="/plan"
-              className="px-6 py-3 rounded-full bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-extrabold text-xs shadow-lg inline-block"
-            >
-              Start your trip
-            </Link>
-          </div>
         </div>
 
-        <div className="md:col-span-6 bg-slate-900/90 rounded-3xl p-8 border border-slate-800 text-center flex flex-col items-center justify-center min-h-[220px]">
-          <span className="text-[10px] font-bold uppercase tracking-widest text-slate-500 block mb-2">
-            Global Coverage
-          </span>
-          <span className="text-6xl sm:text-7xl font-black text-white font-sans tracking-tight">
-            180+
-          </span>
-          <p className="text-xs text-slate-400 font-medium mt-2">
-            Plan anywhere in the world.
-          </p>
+        <div>
+          <Link
+            to="/plan"
+            className="inline-flex items-center gap-2 px-8 py-3.5 rounded-2xl bg-[#22D3EE] hover:bg-cyan-300 text-[#080D1B] font-extrabold text-sm shadow-xl shadow-cyan-500/20 transition-all active:scale-95"
+          >
+            <Sparkles className="w-4 h-4" />
+            <span>Start Planning with TripWise AI</span>
+          </Link>
         </div>
       </section>
     </div>

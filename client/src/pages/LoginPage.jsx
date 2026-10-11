@@ -115,7 +115,7 @@ export function LoginPage() {
           navigate('/plan');
         }, 900);
       } else {
-        // If not in database, seamlessly create profile so anyone can log in with their credentials!
+        // If not in database, seamlessly create profile so anyone can log in with their credentials
         const autoName = cleanEmail.split('@')[0];
         const displayName = autoName.charAt(0).toUpperCase() + autoName.slice(1);
 
@@ -149,36 +149,36 @@ export function LoginPage() {
   if (currentUser) {
     return (
       <div className="max-w-xl mx-auto py-12 px-4 animate-fadeIn text-white">
-        <div className="bg-slate-900/90 rounded-3xl p-8 border border-slate-800 shadow-2xl text-center space-y-6">
+        <div className="bg-[#111A2E] rounded-3xl p-8 border border-[#29354B] shadow-2xl text-center space-y-6">
           <div className="relative inline-block">
-            <div className="w-24 h-24 rounded-3xl bg-gradient-to-tr from-cyan-500 to-emerald-500 p-1 mx-auto shadow-xl shadow-cyan-500/20">
+            <div className="w-24 h-24 rounded-3xl bg-gradient-to-tr from-cyan-500 to-blue-600 p-1 mx-auto shadow-xl shadow-cyan-500/20">
               <img
                 src={currentUser.avatar}
                 alt={currentUser.name}
-                className="w-full h-full rounded-[22px] bg-slate-950 object-cover"
+                className="w-full h-full rounded-[22px] bg-[#080D1B] object-cover"
               />
             </div>
-            <span className="absolute bottom-1 right-1 w-5 h-5 bg-emerald-500 border-2 border-slate-900 rounded-full" />
+            <span className="absolute bottom-1 right-1 w-5 h-5 bg-emerald-500 border-2 border-[#111A2E] rounded-full" />
           </div>
 
           <div>
-            <h2 className="text-2xl font-black text-white font-sans">{currentUser.name}</h2>
-            <p className="text-sm text-cyan-400 font-medium">{currentUser.email}</p>
-            <p className="text-xs text-slate-500 mt-1">Member since {currentUser.joinedAt || '2026'}</p>
+            <h2 className="text-2xl font-extrabold text-[#F8FAFC] font-sans">{currentUser.name}</h2>
+            <p className="text-sm text-[#22D3EE] font-medium">{currentUser.email}</p>
+            <p className="text-xs text-[#94A3B8] mt-1">Member since {currentUser.joinedAt || '2026'}</p>
           </div>
 
-          <div className="grid grid-cols-2 gap-4 py-3 border-y border-slate-800/80">
-            <div className="p-3 rounded-2xl bg-slate-950/60 border border-slate-800">
-              <MapPin className="w-5 h-5 text-cyan-400 mx-auto mb-1" />
-              <span className="block text-xs font-semibold text-slate-400">Current Trip</span>
-              <span className="block text-sm font-bold text-white truncate">
+          <div className="grid grid-cols-2 gap-4 py-3 border-y border-[#29354B]">
+            <div className="p-3.5 rounded-2xl bg-[#080D1B] border border-[#29354B]">
+              <MapPin className="w-5 h-5 text-rose-400 mx-auto mb-1" />
+              <span className="block text-xs font-semibold text-[#94A3B8]">Current Trip</span>
+              <span className="block text-sm font-bold text-[#F8FAFC] truncate">
                 {itinerary?.trip?.destination || 'None active'}
               </span>
             </div>
-            <div className="p-3 rounded-2xl bg-slate-950/60 border border-slate-800">
-              <Calendar className="w-5 h-5 text-emerald-400 mx-auto mb-1" />
-              <span className="block text-xs font-semibold text-slate-400">Days Planned</span>
-              <span className="block text-sm font-bold text-white">
+            <div className="p-3.5 rounded-2xl bg-[#080D1B] border border-[#29354B]">
+              <Calendar className="w-5 h-5 text-amber-400 mx-auto mb-1" />
+              <span className="block text-xs font-semibold text-[#94A3B8]">Days Planned</span>
+              <span className="block text-sm font-bold text-[#F8FAFC]">
                 {itinerary?.days?.length || 0} Days
               </span>
             </div>
@@ -187,14 +187,14 @@ export function LoginPage() {
           <div className="flex flex-col sm:flex-row items-center gap-3 justify-center pt-2">
             <Link
               to="/plan"
-              className="w-full sm:w-auto px-6 py-3 rounded-2xl bg-gradient-to-r from-cyan-500 to-emerald-500 hover:from-cyan-400 hover:to-emerald-400 text-slate-950 font-extrabold text-xs shadow-lg shadow-cyan-500/20 transition-all flex items-center justify-center gap-2"
+              className="w-full sm:w-auto px-6 py-3 rounded-2xl bg-[#22D3EE] hover:bg-cyan-300 text-[#080D1B] font-extrabold text-xs shadow-lg shadow-cyan-500/20 transition-all flex items-center justify-center gap-2"
             >
               <span>Explore & Plan</span>
               <ArrowRight className="w-4 h-4" />
             </Link>
             <button
               onClick={logout}
-              className="w-full sm:w-auto px-6 py-3 rounded-2xl bg-slate-800 hover:bg-rose-950/40 text-slate-300 hover:text-rose-400 border border-slate-700 hover:border-rose-900 font-bold text-xs transition-all flex items-center justify-center gap-2"
+              className="w-full sm:w-auto px-6 py-3 rounded-2xl bg-[#19243A] hover:bg-rose-950/40 text-slate-300 hover:text-rose-400 border border-[#29354B] hover:border-rose-900 font-bold text-xs transition-all flex items-center justify-center gap-2"
             >
               <LogOut className="w-4 h-4" />
               <span>Log Out</span>
@@ -207,16 +207,16 @@ export function LoginPage() {
 
   return (
     <div className="max-w-md mx-auto py-8 sm:py-12 px-4 animate-fadeIn text-white">
-      <div className="bg-slate-900/90 rounded-3xl p-6 sm:p-8 border border-slate-800 shadow-2xl space-y-6">
+      <div className="bg-[#111A2E] rounded-3xl p-6 sm:p-8 border border-[#29354B] shadow-2xl space-y-6">
         {/* Brand & Title */}
         <div className="text-center space-y-2">
-          <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-cyan-500 to-emerald-500 flex items-center justify-center text-white mx-auto shadow-lg shadow-cyan-500/20">
+          <div className="w-12 h-12 rounded-2xl bg-cyan-500/10 text-[#22D3EE] border border-cyan-500/20 flex items-center justify-center mx-auto shadow-lg shadow-cyan-500/10">
             <Compass className="w-6 h-6 animate-pulse" />
           </div>
-          <h1 className="text-2xl sm:text-3xl font-black text-white font-sans tracking-tight">
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-[#F8FAFC] font-sans tracking-tight">
             {isSignUp ? 'Create your account' : 'Welcome back'}
           </h1>
-          <p className="text-xs text-slate-400">
+          <p className="text-xs text-[#94A3B8]">
             {isSignUp
               ? 'Enter your details to create an account and plan trips'
               : 'Sign in to access your saved trips and customized itineraries'}
@@ -224,7 +224,7 @@ export function LoginPage() {
         </div>
 
         {/* Tab Switcher */}
-        <div className="grid grid-cols-2 p-1 rounded-2xl bg-slate-950 border border-slate-800">
+        <div className="grid grid-cols-2 p-1 rounded-2xl bg-[#080D1B] border border-[#29354B]">
           <button
             type="button"
             onClick={() => {
@@ -234,8 +234,8 @@ export function LoginPage() {
             }}
             className={`py-2 text-xs font-bold rounded-xl transition-all ${
               !isSignUp
-                ? 'bg-gradient-to-r from-cyan-500 to-emerald-500 text-slate-950 shadow-md'
-                : 'text-slate-400 hover:text-white'
+                ? 'bg-[#22D3EE] text-[#080D1B] shadow-md'
+                : 'text-[#94A3B8] hover:text-white'
             }`}
           >
             Sign In
@@ -249,8 +249,8 @@ export function LoginPage() {
             }}
             className={`py-2 text-xs font-bold rounded-xl transition-all ${
               isSignUp
-                ? 'bg-gradient-to-r from-cyan-500 to-emerald-500 text-slate-950 shadow-md'
-                : 'text-slate-400 hover:text-white'
+                ? 'bg-[#22D3EE] text-[#080D1B] shadow-md'
+                : 'text-[#94A3B8] hover:text-white'
             }`}
           >
             Create Account
@@ -276,14 +276,14 @@ export function LoginPage() {
             <div className="space-y-1.5">
               <label className="text-xs font-bold text-slate-300">Full Name</label>
               <div className="relative">
-                <User className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500" />
+                <User className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-[#94A3B8]" />
                 <input
                   type="text"
                   required
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   placeholder="e.g. Alex Morgan"
-                  className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white text-xs placeholder:text-slate-600 focus:outline-none focus:border-cyan-500 transition-colors"
+                  className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-[#080D1B] border border-[#29354B] text-white text-xs placeholder:text-slate-600 focus:outline-none focus:border-[#22D3EE] transition-colors"
                 />
               </div>
             </div>
@@ -292,14 +292,14 @@ export function LoginPage() {
           <div className="space-y-1.5">
             <label className="text-xs font-bold text-slate-300">Email Address</label>
             <div className="relative">
-              <Mail className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500" />
+              <Mail className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-[#94A3B8]" />
               <input
                 type="email"
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="you@example.com"
-                className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white text-xs placeholder:text-slate-600 focus:outline-none focus:border-cyan-500 transition-colors"
+                className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-[#080D1B] border border-[#29354B] text-white text-xs placeholder:text-slate-600 focus:outline-none focus:border-[#22D3EE] transition-colors"
               />
             </div>
           </div>
@@ -311,26 +311,26 @@ export function LoginPage() {
                 <button
                   type="button"
                   onClick={() => alert('Password reset link sent to your email.')}
-                  className="text-[11px] font-semibold text-cyan-400 hover:underline"
+                  className="text-[11px] font-semibold text-[#22D3EE] hover:underline"
                 >
                   Forgot password?
                 </button>
               )}
             </div>
             <div className="relative">
-              <Lock className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500" />
+              <Lock className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-[#94A3B8]" />
               <input
                 type={showPassword ? 'text' : 'password'}
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"
-                className="w-full pl-10 pr-10 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white text-xs placeholder:text-slate-600 focus:outline-none focus:border-cyan-500 transition-colors"
+                className="w-full pl-10 pr-10 py-2.5 rounded-xl bg-[#080D1B] border border-[#29354B] text-white text-xs placeholder:text-slate-600 focus:outline-none focus:border-[#22D3EE] transition-colors"
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-300"
+                className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[#94A3B8] hover:text-white"
               >
                 {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
               </button>
@@ -338,12 +338,12 @@ export function LoginPage() {
           </div>
 
           <div className="flex items-center justify-between text-xs pt-1">
-            <label className="flex items-center gap-2 cursor-pointer select-none text-slate-400">
+            <label className="flex items-center gap-2 cursor-pointer select-none text-[#94A3B8]">
               <input
                 type="checkbox"
                 checked={rememberMe}
                 onChange={(e) => setRememberMe(e.target.checked)}
-                className="rounded border-slate-700 bg-slate-950 text-cyan-500 focus:ring-0"
+                className="rounded border-[#29354B] bg-[#080D1B] text-[#22D3EE] focus:ring-0"
               />
               <span>Remember me for 30 days</span>
             </label>
@@ -351,14 +351,14 @@ export function LoginPage() {
 
           <button
             type="submit"
-            className="w-full py-3 rounded-2xl bg-gradient-to-r from-cyan-500 to-emerald-500 hover:from-cyan-400 hover:to-emerald-400 text-slate-950 font-extrabold text-xs shadow-lg shadow-cyan-500/20 transition-all flex items-center justify-center gap-2 pt-3"
+            className="w-full py-3 rounded-2xl bg-[#22D3EE] hover:bg-cyan-300 text-[#080D1B] font-extrabold text-xs shadow-lg shadow-cyan-500/20 transition-all flex items-center justify-center gap-2 pt-3 active:scale-95"
           >
             <span>{isSignUp ? 'Create Free Account' : 'Sign In to TripWise'}</span>
-            <ArrowRight className="w-4 h-4" />
+            <ArrowRight className="w-4 h-4 text-[#080D1B]" />
           </button>
         </form>
 
-        <p className="text-center text-xs text-slate-500">
+        <p className="text-center text-xs text-[#94A3B8]">
           By signing in, you agree to our Terms of Service & Privacy Policy.
         </p>
       </div>

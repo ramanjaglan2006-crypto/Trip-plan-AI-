@@ -39,17 +39,17 @@ export function PlanPage() {
     <div className="max-w-4xl mx-auto space-y-8 py-4 animate-fadeIn text-white">
       {/* Notice if an itinerary is already active, with link to Current Itinerary */}
       {itinerary?.trip && !isLoading && (
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 rounded-2xl bg-slate-900/80 border border-slate-800 text-xs shadow-md">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 rounded-2xl bg-[#111A2E] border border-[#29354B] text-xs shadow-md">
           <div className="flex items-center gap-2.5">
             <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse flex-shrink-0" />
-            <span className="text-slate-400">Current active itinerary:</span>
-            <span className="font-bold text-white truncate max-w-[200px] sm:max-w-xs">
+            <span className="text-[#94A3B8]">Current active itinerary:</span>
+            <span className="font-bold text-[#F8FAFC] truncate max-w-[200px] sm:max-w-xs">
               {itinerary.trip.destination} ({itinerary.days?.length} Days)
             </span>
           </div>
           <Link
             to="/itinerary"
-            className="text-cyan-400 hover:text-cyan-300 font-bold flex items-center gap-1 self-start sm:self-auto hover:underline"
+            className="text-[#22D3EE] hover:text-cyan-300 font-bold flex items-center gap-1 self-start sm:self-auto hover:underline"
           >
             <span>Open Current Itinerary</span>
             <ArrowRight className="w-3.5 h-3.5" />
@@ -58,14 +58,14 @@ export function PlanPage() {
       )}
 
       <div className="text-center space-y-2">
-        <div className="w-12 h-12 rounded-2xl bg-cyan-500/20 text-cyan-400 flex items-center justify-center mx-auto mb-3">
+        <div className="w-12 h-12 rounded-2xl bg-cyan-500/10 text-[#22D3EE] border border-cyan-500/20 flex items-center justify-center mx-auto mb-3">
           <Compass className="w-6 h-6 animate-spin" style={{ animationDuration: '20s' }} />
         </div>
-        <h1 className="text-3xl sm:text-5xl font-black tracking-tight text-white font-sans">
-          Explore & <span className="text-cyan-400">Plan</span>
+        <h1 className="text-3xl sm:text-5xl font-extrabold tracking-tight text-[#F8FAFC] font-sans">
+          Explore & <span className="text-[#22D3EE]">Plan</span>
         </h1>
-        <p className="text-xs sm:text-sm text-slate-400 max-w-lg mx-auto">
-          Describe any destination, dates, budget, or preferred activities in free-form text to generate a new itinerary.
+        <p className="text-xs sm:text-sm text-[#94A3B8] max-w-lg mx-auto">
+          Specify destination, duration, budget, and travel interests to build an editable, day-by-day itinerary.
         </p>
       </div>
 

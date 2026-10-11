@@ -26,27 +26,27 @@ export function ErrorState({ error, onRetry, onUseFallback, onClear }) {
   };
 
   return (
-    <div className="glass-panel rounded-3xl p-6 sm:p-8 border border-rose-200 dark:border-rose-900/60 shadow-xl bg-gradient-to-b from-rose-50/80 to-white dark:from-rose-950/30 dark:to-slate-900 my-6 animate-fadeIn">
+    <div className="rounded-3xl p-6 sm:p-8 border border-rose-900/60 shadow-2xl bg-[#111A2E] my-6 animate-fadeIn">
       <div className="flex items-start gap-4">
-        <div className="w-12 h-12 rounded-2xl bg-rose-100 dark:bg-rose-900/50 text-rose-600 dark:text-rose-400 flex items-center justify-center flex-shrink-0 shadow-inner">
-          <AlertTriangle className="w-7 h-7" />
+        <div className="w-12 h-12 rounded-2xl bg-rose-950/60 text-rose-400 border border-rose-800 flex items-center justify-center flex-shrink-0">
+          <AlertTriangle className="w-6 h-6" />
         </div>
 
         <div className="flex-1 min-w-0">
           <div className="flex flex-wrap items-center gap-2 mb-1">
-            <span className="px-2.5 py-0.5 text-[10px] font-extrabold uppercase tracking-wide bg-rose-200 dark:bg-rose-900 text-rose-900 dark:text-rose-200 rounded-md">
+            <span className="px-2.5 py-0.5 text-[10px] font-extrabold uppercase tracking-wide bg-rose-900/60 text-rose-300 border border-rose-800 rounded-md">
               {error?.code || 'ERROR'}
             </span>
-            <span className="text-xs text-rose-600 dark:text-rose-400 font-medium">
+            <span className="text-xs text-rose-400 font-medium">
               Fail-safe Handler Intercepted Error
             </span>
           </div>
 
-          <h3 className="font-extrabold text-lg sm:text-xl text-rose-950 dark:text-rose-100 mb-2">
+          <h3 className="font-extrabold text-lg sm:text-xl text-[#F8FAFC] mb-2">
             {getTitle()}
           </h3>
 
-          <p className="text-xs sm:text-sm text-slate-700 dark:text-slate-300 leading-relaxed mb-4">
+          <p className="text-xs sm:text-sm text-[#94A3B8] leading-relaxed mb-4">
             {error?.message || 'An unexpected failure occurred while requesting the travel model.'}
           </p>
 
@@ -54,42 +54,42 @@ export function ErrorState({ error, onRetry, onUseFallback, onClear }) {
           <div className="flex flex-wrap items-center gap-3">
             <button
               onClick={onRetry}
-              className="px-4 py-2 bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs rounded-xl shadow-md transition-all flex items-center gap-1.5"
+              className="px-4 py-2 bg-rose-600 hover:bg-rose-500 text-white font-bold text-xs rounded-xl shadow-md transition-all flex items-center gap-1.5"
             >
-              <RefreshCw className="w-4 h-4" /> Retry Generation
+              <RefreshCw className="w-3.5 h-3.5" /> Retry Generation
             </button>
 
             {onUseFallback && (
               <button
                 onClick={onUseFallback}
-                className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl shadow-md transition-all flex items-center gap-1.5"
+                className="px-4 py-2 bg-[#22D3EE] hover:bg-cyan-300 text-[#080D1B] font-extrabold text-xs rounded-xl shadow-md transition-all flex items-center gap-1.5"
               >
-                <Sparkles className="w-4 h-4" /> Use Smart Mock Generator
+                <Sparkles className="w-3.5 h-3.5" /> Use Smart Mock Generator
               </button>
             )}
 
             <button
               onClick={onClear}
-              className="px-4 py-2 bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 text-slate-700 dark:text-slate-300 font-bold text-xs rounded-xl transition-all"
+              className="px-4 py-2 bg-[#19243A] hover:bg-[#202e4a] text-slate-300 font-bold text-xs rounded-xl border border-[#29354B] transition-all"
             >
-              Edit Prompt
+              Edit Form
             </button>
           </div>
 
           {/* Technical Details Inspection Toggle */}
           {error?.details && (
-            <div className="mt-4 pt-4 border-t border-rose-200/60 dark:border-rose-900/60">
+            <div className="mt-4 pt-4 border-t border-[#29354B]">
               <button
                 onClick={() => setShowDetails(!showDetails)}
-                className="text-xs font-semibold text-rose-700 dark:text-rose-300 hover:underline flex items-center gap-1"
+                className="text-xs font-semibold text-rose-400 hover:underline flex items-center gap-1"
               >
                 <Terminal className="w-3.5 h-3.5" />
-                {showDetails ? 'Hide Technical Stack Trace' : 'Inspect Diagnostic Trace'}
+                {showDetails ? 'Hide Diagnostic Trace' : 'Inspect Diagnostic Trace'}
                 {showDetails ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />}
               </button>
 
               {showDetails && (
-                <pre className="mt-2 p-3 rounded-xl bg-slate-900 text-slate-100 text-[11px] font-mono overflow-x-auto max-h-48 whitespace-pre-wrap border border-slate-800">
+                <pre className="mt-2 p-3 rounded-xl bg-[#080D1B] text-slate-300 text-[11px] font-mono overflow-x-auto max-h-48 whitespace-pre-wrap border border-[#29354B]">
                   {typeof error.details === 'string' ? error.details : JSON.stringify(error.details, null, 2)}
                 </pre>
               )}

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useTripContext } from '../../context/TripContext';
-import { Compass, User, Menu } from 'lucide-react';
+import { Compass, User, Menu, X } from 'lucide-react';
 
 export function Header() {
   const { currentUser } = useTripContext();
@@ -17,37 +17,37 @@ export function Header() {
   ];
 
   return (
-    <header className="sticky top-0 z-40 bg-slate-950/90 backdrop-blur-md border-b border-slate-800 text-white transition-colors">
+    <header className="sticky top-0 z-40 bg-[#080D1B]/90 backdrop-blur-md border-b border-[#29354B] text-white transition-colors">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
-        {/* Brand Logo */}
-        <Link to="/" className="flex items-center gap-3 group">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-cyan-500 via-emerald-500 to-blue-600 flex items-center justify-center text-white shadow-lg shadow-cyan-500/20 group-hover:scale-105 transition-transform">
-            <Compass className="w-6 h-6 animate-pulse" />
+        {/* Brand Logo & Tagline */}
+        <Link to="/" className="flex items-center gap-3 group focus:outline-none focus:ring-2 focus:ring-cyan-500 rounded-xl p-1">
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-cyan-500 via-teal-500 to-blue-600 flex items-center justify-center text-white shadow-lg shadow-cyan-500/20 group-hover:scale-105 transition-transform">
+            <Compass className="w-5 h-5" />
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <span className="font-black text-xl tracking-wider text-white uppercase font-sans">
-                TRIPWISE <span className="text-cyan-400">AI</span>
+              <span className="font-extrabold text-xl tracking-tight text-white uppercase font-sans">
+                TRIPWISE <span className="text-[#22D3EE]">AI</span>
               </span>
             </div>
-            <p className="text-[10px] text-slate-400 tracking-wide font-medium hidden sm:block">
+            <p className="text-[10px] text-[#94A3B8] tracking-widest font-semibold uppercase hidden sm:block">
               EDITABLE ITINERARY ENGINE
             </p>
           </div>
         </Link>
 
         {/* Center Navigation Links (Desktop) */}
-        <nav className="hidden lg:flex items-center gap-6">
+        <nav className="hidden lg:flex items-center gap-1.5 bg-[#111A2E]/70 p-1.5 rounded-full border border-[#29354B]">
           {navLinks.map((link) => {
             const isActive = location.pathname === link.path;
             return (
               <Link
                 key={link.path}
                 to={link.path}
-                className={`text-xs font-bold transition-all px-3 py-1.5 rounded-full ${
+                className={`text-xs font-semibold transition-all px-4 py-2 rounded-full ${
                   isActive
-                    ? 'text-cyan-400 bg-cyan-950/40 border border-cyan-800/60 shadow-sm'
-                    : 'text-slate-300 hover:text-white hover:bg-slate-900/60'
+                    ? 'text-[#22D3EE] bg-[#19243A] border border-cyan-800/50 shadow-sm'
+                    : 'text-[#94A3B8] hover:text-[#F8FAFC] hover:bg-[#19243A]/50'
                 }`}
               >
                 {link.label}
@@ -56,61 +56,69 @@ export function Header() {
           })}
         </nav>
 
-        {/* Right Actions */}
+        {/* Right Actions: Profile / Login & Mobile Hamburger */}
         <div className="flex items-center gap-3">
-          {/* Login or User Profile Link */}
           {currentUser ? (
             <Link
               to="/login"
-              className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-900 text-slate-200 border border-slate-700 hover:border-cyan-500 text-xs font-bold transition-all group shadow-sm"
+              className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#111A2E] text-slate-200 border border-[#29354B] hover:border-[#22D3EE] text-xs font-semibold transition-all group shadow-sm focus:outline-none focus:ring-2 focus:ring-cyan-500"
               title="View Account Profile"
             >
               <img
                 src={currentUser.avatar}
                 alt={currentUser.name}
-                className="w-5 h-5 rounded-full bg-slate-950 object-cover"
+                className="w-5 h-5 rounded-full bg-[#080D1B] object-cover"
               />
-              <span className="text-white group-hover:text-cyan-400 transition-colors">
+              <span className="text-[#F8FAFC] group-hover:text-[#22D3EE] transition-colors">
                 {currentUser.name.split(' ')[0]}
               </span>
             </Link>
           ) : (
             <Link
               to="/login"
-              className="flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-slate-900 text-slate-200 border border-slate-700 hover:bg-slate-800 hover:border-slate-600 text-xs font-bold transition-all"
+              className="flex items-center gap-1.5 px-4 py-2 rounded-full bg-[#111A2E] text-[#F8FAFC] border border-[#29354B] hover:bg-[#19243A] hover:border-cyan-700/60 text-xs font-semibold transition-all shadow-sm focus:outline-none focus:ring-2 focus:ring-cyan-500"
             >
-              <User className="w-3.5 h-3.5" /> Login
+              <User className="w-3.5 h-3.5 text-[#22D3EE]" />
+              <span>Login</span>
             </Link>
           )}
 
           {/* Mobile Menu Toggle */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="p-2 lg:hidden text-slate-300 hover:text-white"
+            className="p-2 lg:hidden text-slate-300 hover:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500"
+            aria-label="Toggle navigation menu"
           >
-            <Menu className="w-6 h-6" />
+            {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
           </button>
         </div>
       </div>
 
       {/* Mobile Navigation Drawer */}
       {mobileMenuOpen && (
-        <div className="lg:hidden border-t border-slate-800 bg-slate-950 p-4 space-y-3 animate-fadeIn">
-          {navLinks.map((link) => (
-            <Link
-              key={link.path}
-              to={link.path}
-              onClick={() => setMobileMenuOpen(false)}
-              className="block text-sm font-semibold text-slate-200 hover:text-cyan-400 py-1"
-            >
-              {link.label}
-            </Link>
-          ))}
-          <div className="pt-2 border-t border-slate-800">
+        <div className="lg:hidden border-t border-[#29354B] bg-[#080D1B] p-4 space-y-2 animate-fadeIn">
+          {navLinks.map((link) => {
+            const isActive = location.pathname === link.path;
+            return (
+              <Link
+                key={link.path}
+                to={link.path}
+                onClick={() => setMobileMenuOpen(false)}
+                className={`block text-sm font-semibold py-2 px-3 rounded-xl transition-all ${
+                  isActive
+                    ? 'text-[#22D3EE] bg-[#111A2E] border border-cyan-800/40'
+                    : 'text-[#94A3B8] hover:text-[#F8FAFC] hover:bg-[#111A2E]'
+                }`}
+              >
+                {link.label}
+              </Link>
+            );
+          })}
+          <div className="pt-3 border-t border-[#29354B]">
             <Link
               to="/login"
               onClick={() => setMobileMenuOpen(false)}
-              className="block text-sm font-bold text-cyan-400 py-1"
+              className="block text-sm font-bold text-[#22D3EE] py-2 px-3 rounded-xl hover:bg-[#111A2E]"
             >
               {currentUser ? `Profile (${currentUser.name})` : 'Login / Sign Up'}
             </Link>

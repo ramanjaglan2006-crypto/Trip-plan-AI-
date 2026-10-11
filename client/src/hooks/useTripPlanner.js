@@ -239,6 +239,18 @@ export function useTripPlanner() {
     }
   }, [lastPrompt]);
 
+  /**
+   * Loads an existing trip into active session
+   */
+  const loadTrip = useCallback((tripData) => {
+    if (!tripData) return;
+    setItinerary(tripData);
+    saveTripToLibrary(tripData);
+    if (tripData.days?.[0]?.stops?.[0]?.id) {
+      setExpandedStopIds(new Set([tripData.days[0].stops[0].id]));
+    }
+  }, []);
+
   return {
     itinerary,
     isLoading,
@@ -261,5 +273,6 @@ export function useTripPlanner() {
     editStop,
     addStop,
     resetItinerary,
+    loadTrip,
   };
 }

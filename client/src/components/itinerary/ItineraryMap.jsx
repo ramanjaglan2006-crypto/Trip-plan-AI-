@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { Maximize2, Compass, Layers, AlertCircle, Clock, Tag } from 'lucide-react';
@@ -16,8 +16,14 @@ export function ItineraryMap({
 }) {
   const mapContainerRef = useRef(null);
   const mapInstanceRef = useRef(null);
+  const tileLayerRef = useRef(null);
   const markersLayerRef = useRef(null);
   const polylinesLayerRef = useRef(null);
+
+  // Map theme: 'voyager' (CARTO Voyager light/colorful) or 'dark_all' (CARTO Dark Matter)
+  const [mapTheme, setMapTheme] = useState('voyager');
+
+  const cartoKey = import.meta.env.VITE_CARTO_API_KEY || 'cb1_4gy6_1_709e8369f5f9115ec01eb381';
 
   // Initialize Leaflet Map
   useEffect(() => {
@@ -25,18 +31,16 @@ export function ItineraryMap({
 
     if (!mapInstanceRef.current) {
       const map = L.map(mapContainerRef.current, {
-        center: [20.5937, 78.9629], // Default center (world/regional view)
+        center: [20.5937, 78.9629], // Default initial center
         zoom: 5,
-        zoomControl: false, // We'll add custom positioned zoom control
+        zoomControl: false,
         attributionControl: false,
       });
 
-      // CartoDB Dark Matter raster tiles with authorized API key parameter
-      const cartoKey = import.meta.env.VITE_CARTO_API_KEY || 'cb1_4gy6_1_709e8369f5f9115ec01eb381';
-      const tileUrl = `https://{s}.basemaps.cartocdn.com/rastertiles/dark_all/{z}/{x}/{y}{r}.png?key=${cartoKey}`;
-      L.tileLayer(tileUrl, {
+      // CartoDB Voyager raster tiles with authorized API key parameter
+      const tileUrl = `https://basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}.png?key=${cartoKey}`;
+      tileLayerRef.current = L.tileLayer(tileUrl, {
         maxZoom: 19,
-        subdomains: 'abcd',
       }).addTo(map);
 
       // Attribution
@@ -61,7 +65,17 @@ export function ItineraryMap({
         mapInstanceRef.current = null;
       }
     };
-  }, []);
+  }, [cartoKey]);
+
+  // Update Tile Layer when mapTheme changes
+  useEffect(() => {
+    if (!tileLayerRef.current) return;
+    const url =
+      mapTheme === 'voyager'
+        ? `https://basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}.png?key=${cartoKey}`
+        : `https://basemaps.cartocdn.com/rastertiles/dark_all/{z}/{x}/{y}.png?key=${cartoKey}`;
+    tileLayerRef.current.setUrl(url);
+  }, [mapTheme, cartoKey]);
 
   // Update Markers and Routes whenever stops, routes, or selection changes
   useEffect(() => {
@@ -99,7 +113,7 @@ export function ItineraryMap({
         });
 
         polyline.bindTooltip(
-          `${leg.fromStop.title} → ${leg.toStop.title}<br/>${(leg.routeData.distanceKm).toFixed(1)} km (${isStraight ? 'Straight-line' : leg.routeData.mode})`,
+          `${leg.fromStop.title} → ${leg.toStop.title}<br/>${leg.routeData.distanceKm.toFixed(1)} km (${isStraight ? 'Straight-line' : leg.routeData.mode})`,
           { sticky: true, className: 'tripwise-map-tooltip' }
         );
 
@@ -119,40 +133,44 @@ export function ItineraryMap({
       const markerHtml = `
         <div class="tripwise-marker-wrapper ${isSelected ? 'is-selected' : ''}" style="--marker-color: ${dayColor};">
           <div class="tripwise-marker-pin">
-            <span class="tripwise-marker-num">${stop.sequenceIndex}</span>
+            <span>${stop.sequenceIndex}</span>
           </div>
-          <div class="tripwise-marker-pulse"></div>
         </div>
       `;
 
       const customIcon = L.divIcon({
-        html: markerHtml,
         className: 'tripwise-custom-marker',
-        iconSize: [34, 34],
-        iconAnchor: [17, 34],
-        popupAnchor: [0, -34],
+        html: markerHtml,
+        iconSize: [32, 32],
+        iconAnchor: [16, 16],
+        popupAnchor: [0, -18],
       });
 
       const marker = L.marker([lat, lon], { icon: customIcon });
 
-      // Rich popup content
+      // Rich interactive popup
       const popupHtml = `
-        <div class="p-3 bg-[#111A2E] text-white rounded-xl border border-[#29354B] shadow-2xl font-sans min-w-[210px] space-y-2">
-          <div class="flex items-center justify-between text-[11px] pb-1 border-b border-[#29354B]">
-            <span class="font-extrabold uppercase text-[#22D3EE]">Day ${stop.dayNumber} • Stop #${stop.sequenceIndex}</span>
-            <span class="bg-[#19243A] px-1.5 py-0.5 rounded text-slate-300 font-medium">${stop.category || 'Sightseeing'}</span>
+        <div class="tripwise-popup-card bg-[#111A2E] text-white p-4 rounded-2xl border border-[#29354B] shadow-2xl min-w-[240px] max-w-[280px]">
+          <div class="flex items-center justify-between gap-2 mb-2 pb-2 border-b border-[#29354B]">
+            <span class="px-2 py-0.5 rounded text-[10px] font-extrabold uppercase tracking-wider" style="background: ${dayColor}22; color: ${dayColor}; border: 1px solid ${dayColor}55;">
+              Day ${stop.dayNumber} • Stop ${stop.sequenceIndex}
+            </span>
+            <span class="text-[11px] font-bold text-slate-400 flex items-center gap-1">
+              ${stop.time || ''}
+            </span>
           </div>
-          <h4 class="font-extrabold text-sm text-[#F8FAFC] leading-tight">${stop.title}</h4>
-          <div class="text-[11px] text-[#94A3B8] flex items-center gap-1.5">
-            <span class="inline-block w-2 h-2 rounded-full" style="background-color: ${dayColor}"></span>
-            <span>Scheduled: ${stop.time || 'Flexible'}</span>
+          <h4 class="font-extrabold text-sm text-[#F8FAFC] leading-snug mb-1">
+            ${stop.title}
+          </h4>
+          <p class="text-xs text-[#94A3B8] leading-relaxed line-clamp-3 mb-3">
+            ${stop.description || ''}
+          </p>
+          <div class="flex items-center justify-between text-[11px] pt-2 border-t border-[#29354B]/60 text-slate-300">
+            <span>⏱️ ${stop.durationMinutes || 60} mins</span>
+            <span class="font-bold text-[#22D3EE]">${stop.estimatedCost || 'Free'}</span>
           </div>
-          ${stop.durationMinutes ? `<div class="text-[10px] text-slate-400">Duration: ${stop.durationMinutes} mins</div>` : ''}
-          <button 
-            id="popup-select-${stop.id}" 
-            class="w-full mt-2 py-1 px-2.5 rounded-lg bg-[#22D3EE] text-[#080D1B] font-extrabold text-[11px] text-center transition-all hover:bg-cyan-300 active:scale-95 shadow-sm"
-          >
-            Select in Timeline
+          <button id="popup-select-${stop.id}" class="mt-3 w-full py-1.5 rounded-xl bg-[#19243A] hover:bg-[#22D3EE] hover:text-[#080D1B] text-[#F8FAFC] text-xs font-bold transition-all border border-[#29354B]">
+            Focus in Timeline
           </button>
         </div>
       `;
@@ -239,13 +257,28 @@ export function ItineraryMap({
           )}
         </div>
 
-        <button
-          onClick={handleFitBounds}
-          className="bg-[#111A2E]/90 hover:bg-[#19243A] backdrop-blur-md p-2 rounded-xl border border-[#29354B] text-[#94A3B8] hover:text-white shadow-lg pointer-events-auto transition-all"
-          title="Fit to all locations"
-        >
-          <Maximize2 className="w-4 h-4 text-[#22D3EE]" />
-        </button>
+        <div className="flex items-center gap-2 pointer-events-auto">
+          {/* Map Style Switcher (CARTO Voyager vs Dark Matter) */}
+          <button
+            onClick={() => setMapTheme(mapTheme === 'voyager' ? 'dark_all' : 'voyager')}
+            className="bg-[#111A2E]/90 hover:bg-[#19243A] backdrop-blur-md px-3 py-1.5 rounded-xl border border-[#29354B] text-xs font-bold text-slate-200 hover:text-white shadow-lg transition-all flex items-center gap-1.5"
+            title="Switch Map Theme"
+          >
+            <Layers className="w-3.5 h-3.5 text-[#22D3EE]" />
+            <span className="hidden sm:inline">
+              {mapTheme === 'voyager' ? 'CARTO Voyager' : 'CARTO Dark'}
+            </span>
+          </button>
+
+          {/* Fit Bounds */}
+          <button
+            onClick={handleFitBounds}
+            className="bg-[#111A2E]/90 hover:bg-[#19243A] backdrop-blur-md p-2 rounded-xl border border-[#29354B] text-[#94A3B8] hover:text-white shadow-lg transition-all"
+            title="Fit to all locations"
+          >
+            <Maximize2 className="w-4 h-4 text-[#22D3EE]" />
+          </button>
+        </div>
       </div>
 
       {/* Map Legend Pill */}

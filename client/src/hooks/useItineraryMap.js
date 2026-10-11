@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { geocodeLocation, getRouteBetween } from '../services/geoService';
 
 export function useItineraryMap(itinerary, selectedDayNumber = 'all') {
@@ -12,7 +12,7 @@ export function useItineraryMap(itinerary, selectedDayNumber = 'all') {
   const destination = itinerary?.trip?.destination || '';
   const days = itinerary?.days || [];
 
-  // 1. Geocode all stops in the itinerary
+  // 1. Geocode all stops in parallel
   useEffect(() => {
     let isCancelled = false;
 
@@ -23,41 +23,53 @@ export function useItineraryMap(itinerary, selectedDayNumber = 'all') {
       }
 
       setIsLoadingGeo(true);
-      const newLocs = {};
+      const allStops = [];
+      days.forEach((day) => {
+        (day.stops || []).forEach((stop) => {
+          allStops.push(stop);
+        });
+      });
 
-      for (const day of days) {
-        for (const stop of day.stops || []) {
-          if (isCancelled) return;
-
-          // If stop already has coordinates embedded
+      // Run geocoding concurrently
+      const results = await Promise.all(
+        allStops.map(async (stop, idx) => {
           if (stop.latitude && stop.longitude) {
-            newLocs[stop.id] = {
-              lat: stop.latitude,
-              lon: stop.longitude,
-              displayName: stop.title,
-              available: true,
+            return {
+              id: stop.id,
+              data: {
+                lat: Number(stop.latitude),
+                lon: Number(stop.longitude),
+                displayName: stop.title,
+                available: true,
+              },
             };
-            continue;
           }
 
-          // Otherwise geocode
-          const geo = await geocodeLocation(stop.title, destination);
-          if (geo) {
-            newLocs[stop.id] = {
-              lat: geo.lat,
-              lon: geo.lon,
-              displayName: geo.displayName,
-              available: true,
-            };
-          } else {
-            newLocs[stop.id] = {
-              available: false,
+          const geo = await geocodeLocation(stop.title, destination, idx);
+          if (geo && !isNaN(geo.lat) && !isNaN(geo.lon)) {
+            return {
+              id: stop.id,
+              data: {
+                lat: geo.lat,
+                lon: geo.lon,
+                displayName: geo.displayName,
+                available: true,
+              },
             };
           }
-        }
-      }
+
+          return {
+            id: stop.id,
+            data: { available: false },
+          };
+        })
+      );
 
       if (!isCancelled) {
+        const newLocs = {};
+        results.forEach(({ id, data }) => {
+          newLocs[id] = data;
+        });
         setLocations(newLocs);
         setIsLoadingGeo(false);
       }
@@ -70,7 +82,7 @@ export function useItineraryMap(itinerary, selectedDayNumber = 'all') {
     };
   }, [itinerary, destination]);
 
-  // 2. Compute routes for consecutive stops within each day
+  // 2. Compute consecutive routes for each day in parallel
   useEffect(() => {
     let isCancelled = false;
 
@@ -81,40 +93,47 @@ export function useItineraryMap(itinerary, selectedDayNumber = 'all') {
       }
 
       setIsLoadingRoutes(true);
-      const computedRoutes = {};
 
-      for (const day of days) {
+      const dayPromises = days.map(async (day) => {
         const dayStops = day.stops || [];
-        const dayLegs = [];
+        const legPromises = [];
 
         for (let i = 0; i < dayStops.length - 1; i++) {
-          if (isCancelled) return;
-
           const fromStop = dayStops[i];
           const toStop = dayStops[i + 1];
           const locA = locations[fromStop.id];
           const locB = locations[toStop.id];
 
           if (locA?.available && locB?.available) {
-            const routeData = await getRouteBetween(locA, locB, travelMode);
-            dayLegs.push({
-              fromStop,
-              toStop,
-              routeData,
-            });
+            legPromises.push(
+              getRouteBetween(locA, locB, travelMode).then((routeData) => ({
+                fromStop,
+                toStop,
+                routeData,
+              }))
+            );
           } else {
-            dayLegs.push({
-              fromStop,
-              toStop,
-              routeData: null, // At least one location is unavailable
-            });
+            legPromises.push(
+              Promise.resolve({
+                fromStop,
+                toStop,
+                routeData: null,
+              })
+            );
           }
         }
 
-        computedRoutes[day.day] = dayLegs;
-      }
+        const legs = await Promise.all(legPromises);
+        return { dayNum: day.day, legs };
+      });
+
+      const dayResults = await Promise.all(dayPromises);
 
       if (!isCancelled) {
+        const computedRoutes = {};
+        dayResults.forEach(({ dayNum, legs }) => {
+          computedRoutes[dayNum] = legs;
+        });
         setRoutesByDay(computedRoutes);
         setIsLoadingRoutes(false);
       }

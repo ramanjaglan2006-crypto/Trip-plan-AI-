@@ -127,8 +127,8 @@ Evaluators can click the **"Test Failures"** button in the header navigation to 
 
 ```bash
 # 1. Clone the repository
-git clone https://github.com/dhruvgupta9713-a11y/trip-planner-Ai.git
-cd trip-planner-Ai
+git clone https://github.com/ramanjaglan2006-crypto/Trip-plan-AI-.git
+cd Trip-plan-AI-
 
 # 2. Install all dependencies (root, server, and client)
 npm run install:all

@@ -14,6 +14,26 @@ export function useTripPlanner() {
   });
   const [lastPrompt, setLastPrompt] = useState('');
 
+  // User Authentication State
+  const [currentUser, setCurrentUser] = useState(() => {
+    try {
+      const saved = localStorage.getItem('tripwise_user');
+      return saved ? JSON.parse(saved) : null;
+    } catch {
+      return null;
+    }
+  });
+
+  const login = useCallback((userObj) => {
+    setCurrentUser(userObj);
+    localStorage.setItem('tripwise_user', JSON.stringify(userObj));
+  }, []);
+
+  const logout = useCallback(() => {
+    setCurrentUser(null);
+    localStorage.removeItem('tripwise_user');
+  }, []);
+
   // Stale Request Protection refs
   const activeRequestId = useRef(0);
   const abortControllerRef = useRef(null);
@@ -229,6 +249,9 @@ export function useTripPlanner() {
     apiKey,
     setApiKey,
     lastPrompt,
+    currentUser,
+    login,
+    logout,
     handleGenerate,
     handleCancelRequest,
     handleUseFallback,

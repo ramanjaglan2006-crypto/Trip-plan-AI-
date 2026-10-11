@@ -9,6 +9,7 @@ import { ItineraryPage } from './pages/ItineraryPage';
 import { MyTripsPage } from './pages/MyTripsPage';
 import { AboutPage } from './pages/AboutPage';
 import { ContactPage } from './pages/ContactPage';
+import { LoginPage } from './pages/LoginPage';
 
 import { Compass } from 'lucide-react';
 
@@ -43,6 +44,7 @@ function AppContent() {
           <Route path="/my-trips" element={<MyTripsPage />} />
           <Route path="/about" element={<AboutPage />} />
           <Route path="/contact" element={<ContactPage />} />
+          <Route path="/login" element={<LoginPage />} />
         </Routes>
       </main>
 

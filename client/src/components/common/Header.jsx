@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { useTripContext } from '../../context/TripContext';
 import { Compass, Moon, Sun, User, Menu } from 'lucide-react';
 
 export function Header({
   darkMode,
   setDarkMode,
 }) {
-  const [showLoginModal, setShowLoginModal] = useState(false);
+  const { currentUser } = useTripContext();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const location = useLocation();
 
@@ -70,13 +71,30 @@ export function Header({
             {darkMode ? <Sun className="w-5 h-5 text-amber-400" /> : <Moon className="w-5 h-5 text-indigo-400" />}
           </button>
 
-          {/* Login Pill Button */}
-          <button
-            onClick={() => setShowLoginModal(true)}
-            className="hidden sm:flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-slate-900 text-slate-200 border border-slate-700 hover:bg-slate-800 text-xs font-bold transition-all"
-          >
-            <User className="w-3.5 h-3.5" /> Login
-          </button>
+          {/* Login or User Profile Link */}
+          {currentUser ? (
+            <Link
+              to="/login"
+              className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-900 text-slate-200 border border-slate-700 hover:border-cyan-500 text-xs font-bold transition-all group shadow-sm"
+              title="View Account Profile"
+            >
+              <img
+                src={currentUser.avatar}
+                alt={currentUser.name}
+                className="w-5 h-5 rounded-full bg-slate-950 object-cover"
+              />
+              <span className="text-white group-hover:text-cyan-400 transition-colors">
+                {currentUser.name.split(' ')[0]}
+              </span>
+            </Link>
+          ) : (
+            <Link
+              to="/login"
+              className="hidden sm:flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-slate-900 text-slate-200 border border-slate-700 hover:bg-slate-800 hover:border-slate-600 text-xs font-bold transition-all"
+            >
+              <User className="w-3.5 h-3.5" /> Login
+            </Link>
+          )}
 
           {/* Start Planning Primary Button */}
           <Link
@@ -109,26 +127,14 @@ export function Header({
               {link.label}
             </Link>
           ))}
-        </div>
-      )}
-
-      {/* Demo Login Modal */}
-      {showLoginModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md animate-fadeIn">
-          <div className="bg-slate-900 rounded-3xl max-w-sm w-full p-6 shadow-2xl border border-slate-800 text-white text-center">
-            <div className="w-12 h-12 rounded-2xl bg-cyan-500/20 text-cyan-400 flex items-center justify-center mx-auto mb-3">
-              <User className="w-6 h-6" />
-            </div>
-            <h3 className="font-bold text-lg mb-1">Welcome Traveler</h3>
-            <p className="text-xs text-slate-400 mb-6">
-              You are currently browsing as a guest. All your custom itineraries are saved locally to your device.
-            </p>
-            <button
-              onClick={() => setShowLoginModal(false)}
-              className="w-full py-2.5 bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold text-xs rounded-xl shadow-md transition-all"
+          <div className="pt-2 border-t border-slate-800">
+            <Link
+              to="/login"
+              onClick={() => setMobileMenuOpen(false)}
+              className="block text-sm font-bold text-cyan-400 py-1"
             >
-              Continue Planning
-            </button>
+              {currentUser ? `Profile (${currentUser.name})` : 'Login / Sign Up'}
+            </Link>
           </div>
         </div>
       )}

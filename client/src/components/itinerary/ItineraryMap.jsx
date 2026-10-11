@@ -31,8 +31,10 @@ export function ItineraryMap({
         attributionControl: false,
       });
 
-      // CartoDB Dark Matter tiles (Dark aesthetic matching TripWise theme)
-      L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+      // CartoDB Dark Matter raster tiles with authorized API key parameter
+      const cartoKey = import.meta.env.VITE_CARTO_API_KEY || 'cb1_4gy6_1_709e8369f5f9115ec01eb381';
+      const tileUrl = `https://{s}.basemaps.cartocdn.com/rastertiles/dark_all/{z}/{x}/{y}{r}.png?key=${cartoKey}`;
+      L.tileLayer(tileUrl, {
         maxZoom: 19,
         subdomains: 'abcd',
       }).addTo(map);

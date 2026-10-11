@@ -8,6 +8,7 @@ export function useTripPlanner() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [expandedStopIds, setExpandedStopIds] = useState(new Set());
+  const [simulatedError, setSimulatedError] = useState('NONE');
   const [apiKey, setApiKey] = useState(() => {
     return localStorage.getItem('tripwise_gemini_api_key') || '';
   });

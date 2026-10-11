@@ -1,5 +1,6 @@
 import { useState, useRef, useCallback, useEffect } from 'react';
 import { generateTrip } from '../services/tripApi';
+import { generateClientMock } from '../utils/clientMock';
 import { saveTripToLibrary, getLastSession } from '../utils/storage';
 
 export function useTripPlanner() {
@@ -7,8 +8,9 @@ export function useTripPlanner() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [expandedStopIds, setExpandedStopIds] = useState(new Set());
-  const [simulatedError, setSimulatedError] = useState('NONE');
-  const [apiKey, setApiKey] = useState('');
+  const [apiKey, setApiKey] = useState(() => {
+    return localStorage.getItem('tripwise_gemini_api_key') || '';
+  });
   const [lastPrompt, setLastPrompt] = useState('');
 
   // Stale Request Protection refs
@@ -195,6 +197,27 @@ export function useTripPlanner() {
     setError(null);
   }, []);
 
+  /**
+   * Directly generates fallback itinerary if API has issues
+   */
+  const handleUseFallback = useCallback(async () => {
+    if (!lastPrompt) return;
+    setError(null);
+    setIsLoading(true);
+    try {
+      const mock = generateClientMock(lastPrompt);
+      setItinerary(mock);
+      saveTripToLibrary(mock);
+      if (mock.days?.[0]?.stops?.[0]?.id) {
+        setExpandedStopIds(new Set([mock.days[0].stops[0].id]));
+      }
+    } catch (err) {
+      console.error('Fallback generation error:', err);
+    } finally {
+      setIsLoading(false);
+    }
+  }, [lastPrompt]);
+
   return {
     itinerary,
     isLoading,
@@ -207,6 +230,7 @@ export function useTripPlanner() {
     lastPrompt,
     handleGenerate,
     handleCancelRequest,
+    handleUseFallback,
     toggleExpandStop,
     removeStop,
     moveStop,

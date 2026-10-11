@@ -101,42 +101,53 @@ async function generateTripItinerary({ prompt, simulatedError = 'NONE', apiKey }
  * Makes raw REST HTTP call to Gemini API
  */
 async function callGeminiLLM(userPrompt, apiKey) {
-  const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
+  const models = ['gemini-1.5-flash', 'gemini-2.0-flash', 'gemini-1.5-pro'];
+  let lastError = null;
 
-  const requestPayload = {
-    contents: [
-      {
-        role: 'user',
-        parts: [
-          { text: `${SYSTEM_PROMPT}\n\nUser Travel Request: "${userPrompt}"` }
-        ]
+  for (const model of models) {
+    try {
+      const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
+      const requestPayload = {
+        contents: [
+          {
+            role: 'user',
+            parts: [
+              { text: `${SYSTEM_PROMPT}\n\nUser Travel Request: "${userPrompt}"` }
+            ]
+          }
+        ],
+        generationConfig: {
+          temperature: 0.7,
+          responseMimeType: 'application/json',
+        }
+      };
+
+      const response = await fetch(endpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(requestPayload),
+      });
+
+      if (!response.ok) {
+        const errorBody = await response.text();
+        throw new Error(`LLM API HTTP ${response.status}: ${errorBody}`);
       }
-    ],
-    generationConfig: {
-      temperature: 0.7,
-      responseMimeType: 'application/json',
+
+      const data = await response.json();
+      const textOutput = data?.candidates?.[0]?.content?.parts?.[0]?.text;
+
+      if (!textOutput) {
+        throw new Error('EMPTY_RESPONSE: Empty content returned from Gemini model candidate.');
+      }
+
+      return textOutput;
+    } catch (err) {
+      console.warn(`Model ${model} request failed:`, err.message);
+      lastError = err;
     }
-  };
-
-  const response = await fetch(endpoint, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(requestPayload),
-  });
-
-  if (!response.ok) {
-    const errorBody = await response.text();
-    throw new Error(`LLM API HTTP ${response.status}: ${errorBody}`);
   }
 
-  const data = await response.json();
-  const textOutput = data?.candidates?.[0]?.content?.parts?.[0]?.text;
-
-  if (!textOutput) {
-    throw new Error('EMPTY_RESPONSE: Empty content returned from Gemini model candidate.');
-  }
-
-  return textOutput;
+  throw lastError || new Error('All Gemini models failed to generate content.');
 }
 
 module.exports = {

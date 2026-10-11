@@ -14,6 +14,7 @@ export function PlanPage() {
     lastPrompt,
     handleGenerate,
     handleCancelRequest,
+    handleUseFallback,
     setSimulatedError,
     resetItinerary,
   } = useTripContext();
@@ -57,10 +58,10 @@ export function PlanPage() {
       {error && !isLoading && (
         <ErrorState
           error={error}
-          onRetry={() => handleGenerate(lastPrompt || '5 days in Japan')}
+          onRetry={() => handleGenerate(lastPrompt || '3 days in Bhopal')}
           onUseFallback={() => {
             setSimulatedError('NONE');
-            handleGenerate(lastPrompt || '3 days in Paris');
+            handleUseFallback();
           }}
           onClear={() => resetItinerary()}
         />

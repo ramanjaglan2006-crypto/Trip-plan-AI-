@@ -13,13 +13,18 @@ export function Header({
   const [showKeyModal, setShowKeyModal] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [inputKey, setInputKey] = useState(apiKey);
+  const [inputKey, setInputKey] = useState(
+    apiKey || localStorage.getItem('tripwise_gemini_api_key') || ''
+  );
   const location = useLocation();
 
   const handleSaveKey = () => {
-    setApiKey(inputKey.trim());
+    const trimmed = inputKey.trim();
+    setApiKey(trimmed);
+    localStorage.setItem('tripwise_gemini_api_key', trimmed);
     setShowKeyModal(false);
   };
+
 
   const navLinks = [
     { label: 'Home', path: '/' },

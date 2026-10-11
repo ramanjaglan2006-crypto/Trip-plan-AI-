@@ -9,11 +9,17 @@ export function ErrorState({ error, onRetry, onUseFallback, onClear }) {
       case 'MALFORMED_JSON':
         return 'AI Output Syntax Error (Malformed JSON)';
       case 'INVALID_SCHEMA':
+      case 'SCHEMA_INVALID':
         return 'AI Schema Mismatch (Invalid Itinerary Shape)';
       case 'AI_TIMEOUT':
+      case 'TIMEOUT':
         return 'Itinerary Request Timed Out (25s Exceeded)';
+      case 'SERVER_ERROR':
+        return 'Internal Server Error (HTTP 500)';
       case 'EMPTY_RESPONSE':
         return 'Empty Payload Returned by AI Model';
+      case 'RATE_LIMITED':
+        return 'API Rate Limit Exceeded (HTTP 429)';
       default:
         return 'Unable to Build Itinerary';
     }

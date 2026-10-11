@@ -13,8 +13,7 @@ export function Header() {
     { label: 'Explore & Plan', path: '/plan' },
     { label: 'Current Itinerary', path: '/itinerary' },
     { label: 'My Trips', path: '/my-trips' },
-    { label: 'About', path: '/about' },
-    { label: 'Contact', path: '/contact' },
+    { label: 'About & Contact', path: '/about' },
   ];
 
   return (
@@ -59,12 +58,11 @@ export function Header() {
 
         {/* Right Actions */}
         <div className="flex items-center gap-3">
-
           {/* Login or User Profile Link */}
           {currentUser ? (
             <Link
               to="/login"
-              className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-900 text-slate-200 border border-slate-700 hover:border-cyan-500 text-xs font-bold transition-all group shadow-sm"
+              className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-900 text-slate-200 border border-slate-700 hover:border-cyan-500 text-xs font-bold transition-all group shadow-sm"
               title="View Account Profile"
             >
               <img
@@ -79,19 +77,11 @@ export function Header() {
           ) : (
             <Link
               to="/login"
-              className="hidden sm:flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-slate-900 text-slate-200 border border-slate-700 hover:bg-slate-800 hover:border-slate-600 text-xs font-bold transition-all"
+              className="flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-slate-900 text-slate-200 border border-slate-700 hover:bg-slate-800 hover:border-slate-600 text-xs font-bold transition-all"
             >
               <User className="w-3.5 h-3.5" /> Login
             </Link>
           )}
-
-          {/* Start Planning Primary Button */}
-          <Link
-            to="/plan"
-            className="px-4 py-1.5 rounded-full bg-gradient-to-r from-cyan-500 to-emerald-500 hover:from-cyan-400 hover:to-emerald-400 text-slate-950 font-extrabold text-xs shadow-md shadow-cyan-500/20 transition-all"
-          >
-            Start Planning
-          </Link>
 
           {/* Mobile Menu Toggle */}
           <button
